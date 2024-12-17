@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FitnessTracker"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".ActivityLogin"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ActivityNewWorkout" android:exported="true" />
+        <activity android:name=".ActivityHomeScreen" android:theme="@style/NoButtonTintTheme" />
+        <activity android:name=".ActivitySignup" android:exported="true" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ActivityLiftSearch" />
+        <activity android:name=".ActivityDisplayLiftsSearch" />
+        <activity android:name=".ActivityCreateUpdateLift" />
+        <activity android:name=".ActivityFriends" />
+        <activity android:name=".ActivityChat" />
+        <activity android:name=".ActivityStartWorkout" />
+        <activity android:name=".FeedAdapter" />
+        <activity android:name=".SocialFeedActivity" />
+        <activity android:name=".ActivityMyWorkouts" />
+        <activity android:name=".ActivityWorkoutDetails" />
+        <activity android:name=".ActivityLift" />
+        <activity android:name=".ActivityLiftDetail" />
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".CalendarDetails" />
+        <activity android:name=".SocialHubActivity" />
+        <activity android:name=".ActivityTrainingCommunity" />
+        <activity android:name=".ActivityCommunityDetail" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AdminSettingsActivity" />
+
+
+
+    </application>
+
+</manifest>

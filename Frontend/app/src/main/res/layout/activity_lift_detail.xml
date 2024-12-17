@@ -1,0 +1,68 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/background_light">
+
+    <!-- Lift Title -->
+    <TextView
+        android:id="@+id/tvLiftTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lift Title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Lift Description -->
+    <TextView
+        android:id="@+id/tvLiftDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Lift Type -->
+    <TextView
+        android:id="@+id/tvLiftType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Lift Muscle Group -->
+    <TextView
+        android:id="@+id/tvLiftMuscleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Muscle Group"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Lift Equipment -->
+    <TextView
+        android:id="@+id/tvLiftEquipment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Equipment"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Lift Level -->
+    <TextView
+        android:id="@+id/tvLiftLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Level"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

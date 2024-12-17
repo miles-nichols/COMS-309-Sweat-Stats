@@ -1,0 +1,202 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.Users</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (coms309.workout.Users)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.Users;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;class UserController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Gets all users&quot;)
+&nbsp;    @GetMapping(&quot;/user&quot;)
+&nbsp;    public List&lt;User&gt; getAllUsers() {
+<b class="nc">&nbsp;        return userService.getAllUsers();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Checks if username and password is valid&quot;)
+&nbsp;    @PostMapping(path = &quot;/user/login&quot;)
+&nbsp;    public Map&lt;String, String&gt; userLogin(@RequestBody User user) {
+<b class="nc">&nbsp;        return userService.authenticateUser(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Creates new User&quot;)
+&nbsp;    @PostMapping(&quot;/user/signup&quot;)
+&nbsp;    public @ResponseBody Map&lt;String, String&gt; createUser(@RequestBody User user) {
+<b class="nc">&nbsp;        return userService.createUser(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Changes User&#39;s Email&quot;)
+&nbsp;    @PutMapping(&quot;user/signup/email&quot;)
+&nbsp;    public @ResponseBody Map&lt;String, String&gt; updateUserEmail(@RequestBody User newUser) {
+<b class="nc">&nbsp;        return userService.updateUserEmail(newUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Changes User&#39;s Username&quot;)
+&nbsp;    @PutMapping(&quot;user/signup/username&quot;)
+&nbsp;    public @ResponseBody Map&lt;String, String&gt; updateUserUsername(@RequestBody User newUser) {
+<b class="nc">&nbsp;        return userService.updateUsername(newUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Changes User Password&quot;)
+&nbsp;    @PutMapping(&quot;user/signup/password&quot;)
+&nbsp;    public @ResponseBody Map&lt;String, String&gt; updateUserPassword(@RequestBody User newUser) {
+<b class="nc">&nbsp;        return userService.updatePassword(newUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Deletes User from Database&quot;)
+&nbsp;    @DeleteMapping(path = &quot;/user/username/{username}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteUserByUsername(@PathVariable String username) {
+<b class="nc">&nbsp;        return userService.deleteUser(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Used to search for users with first part of their username&quot;)
+&nbsp;    @GetMapping(path=&quot;/user/search/{part_username}&quot;)
+&nbsp;    public List&lt;User&gt; searchUser(@PathVariable String part_username) {
+<b class="nc">&nbsp;        return userService.searchUsers(part_username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;follower_username unfollows following_username&quot;)
+&nbsp;    @PutMapping(&quot;/user/unfollow&quot;)
+&nbsp;    public Map&lt;String, String&gt; unfollow(@RequestParam String follower_username, @RequestParam String following_username) {
+<b class="nc">&nbsp;        return userService.unfollowUser(follower_username, following_username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;follower_username follows following_username&quot;)
+&nbsp;    @PutMapping(&quot;/user/follow&quot;)
+&nbsp;    public Map&lt;String, String&gt; follow(@RequestParam String follower_username, @RequestParam String following_username) {
+<b class="nc">&nbsp;        return userService.followUser(follower_username, following_username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Gets user by username&quot;)
+&nbsp;    @GetMapping(&quot;/user/{username}&quot;)
+&nbsp;    public User getUserbyUsername(@PathVariable String username) {
+<b class="nc">&nbsp;        return userService.getUserByUsername(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Gets User&#39;s Friends&quot;)
+&nbsp;    @GetMapping(&quot;/user/friend/{username}&quot;)
+&nbsp;    public Set&lt;User&gt; getFriends(@PathVariable String username) {
+<b class="nc">&nbsp;        return userService.getUserFriends(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Gets User&#39;s Followers&quot;)
+&nbsp;    @GetMapping(&quot;/user/followers/{username}&quot;)
+&nbsp;    public Set&lt;User&gt; getFollowers(@PathVariable String username) {
+<b class="nc">&nbsp;        return userService.getUserFollowers(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary=&quot;Gets Users who User is Following&quot;)
+&nbsp;    @GetMapping(&quot;/user/following/{username}&quot;)
+&nbsp;    public Set&lt;User&gt; getFollowing(@PathVariable String username) {
+<b class="nc">&nbsp;        return userService.getUserFollowing(username);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-24 16:14</div>
+</div>
+</body>
+</html>

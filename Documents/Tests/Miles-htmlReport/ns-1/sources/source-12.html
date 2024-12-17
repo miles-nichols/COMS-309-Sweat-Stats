@@ -1,0 +1,242 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AdapterLiftSearch</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: AdapterLiftSearch (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdapterLiftSearch</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AdapterLiftSearch$LiftViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AdapterLiftSearch$OnAddLiftClickListener</td>
+  </tr>
+  <tr>
+    <td class="name">AdapterLiftSearch$OnViewDetailsClickListener</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Context;
+&nbsp;import android.view.LayoutInflater;
+&nbsp;import android.view.View;
+&nbsp;import android.view.ViewGroup;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.ImageButton;
+&nbsp;
+&nbsp;import androidx.annotation.NonNull;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class AdapterLiftSearch extends RecyclerView.Adapter&lt;AdapterLiftSearch.LiftViewHolder&gt; {
+&nbsp;
+&nbsp;    private List&lt;HashMap&lt;String, String&gt;&gt; liftList;
+&nbsp;    private Context context;
+&nbsp;
+&nbsp;    private OnAddLiftClickListener addLiftListener;
+&nbsp;    private OnViewDetailsClickListener viewDetailsListener;
+&nbsp;
+&nbsp;    public AdapterLiftSearch(List&lt;HashMap&lt;String, String&gt;&gt; liftList,
+&nbsp;                             OnAddLiftClickListener addLiftListener,
+&nbsp;                             OnViewDetailsClickListener viewDetailsListener,
+<b class="nc">&nbsp;                             Context context) {</b>
+<b class="nc">&nbsp;        this.liftList = liftList;</b>
+<b class="nc">&nbsp;        this.addLiftListener = addLiftListener;</b>
+<b class="nc">&nbsp;        this.viewDetailsListener = viewDetailsListener;</b>
+<b class="nc">&nbsp;        this.context = context;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @NonNull
+&nbsp;    @Override
+&nbsp;    public LiftViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+<b class="nc">&nbsp;        View view = LayoutInflater.from(context).inflate(R.layout.item_lift_search, parent, false);</b>
+<b class="nc">&nbsp;        return new LiftViewHolder(view);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void onBindViewHolder(@NonNull LiftViewHolder holder, int position) {
+<b class="nc">&nbsp;        HashMap&lt;String, String&gt; lift = liftList.get(position);</b>
+<b class="nc">&nbsp;        holder.tvLiftTitle.setText(lift.get(&quot;title&quot;));</b>
+&nbsp;
+&nbsp;        // Clicking the entire item adds the lift to the workout
+<b class="nc">&nbsp;        holder.itemView.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            if (addLiftListener != null) {</b>
+<b class="nc">&nbsp;                addLiftListener.onAddLiftClicked(lift);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        // Clicking the &quot;View Details&quot; button opens the details screen
+<b class="nc">&nbsp;        holder.btnViewDetails.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            if (viewDetailsListener != null) {</b>
+<b class="nc">&nbsp;                viewDetailsListener.onViewDetailsClicked(lift);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getItemCount() {
+<b class="nc">&nbsp;        return liftList.size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static class LiftViewHolder extends RecyclerView.ViewHolder {
+&nbsp;        TextView tvLiftTitle;
+&nbsp;        ImageButton btnViewDetails; // Use ImageButton here
+&nbsp;
+&nbsp;        public LiftViewHolder(@NonNull View itemView) {
+<b class="nc">&nbsp;            super(itemView);</b>
+<b class="nc">&nbsp;            tvLiftTitle = itemView.findViewById(R.id.tvLiftTitle);</b>
+<b class="nc">&nbsp;            btnViewDetails = itemView.findViewById(R.id.btnViewDetails); // No casting to Button, it returns an ImageButton</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public interface OnAddLiftClickListener {
+&nbsp;        void onAddLiftClicked(HashMap&lt;String, String&gt; lift);
+&nbsp;    }
+&nbsp;
+&nbsp;    public interface OnViewDetailsClickListener {
+&nbsp;        void onViewDetailsClicked(HashMap&lt;String, String&gt; lift);
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

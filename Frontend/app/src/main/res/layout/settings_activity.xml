@@ -1,0 +1,92 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF"> <!-- White background -->
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/reportHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Report a User"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Username Input -->
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter username to report"
+        android:inputType="text"
+        android:backgroundTint="#000000"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:layout_marginBottom="16dp"
+        /> <!-- Optional user icon -->
+
+    <!-- Type Input -->
+    <EditText
+        android:id="@+id/typeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter type of incident"
+        android:inputType="text"
+        android:backgroundTint="#000000"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:layout_marginBottom="16dp"
+        /> <!-- Optional incident type icon -->
+
+    <!-- Incident Input -->
+    <EditText
+        android:id="@+id/incidentInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Explain the incident"
+        android:inputType="text"
+        android:backgroundTint="#000000"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:layout_marginBottom="24dp"
+        /> <!-- Optional incident description icon -->
+
+    <!-- Report Button -->
+    <Button
+        android:id="@+id/reportButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Report"
+        android:background="#000000"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:elevation="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"/>
+
+    <!-- Log Out Button -->
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:background="#D32F2F"
+    android:textColor="#FFFFFF"
+    android:padding="12dp"
+    android:textSize="16sp"
+    android:elevation="4dp"
+    android:layout_marginTop="8dp"
+    android:layout_gravity="center"/>
+
+</LinearLayout>

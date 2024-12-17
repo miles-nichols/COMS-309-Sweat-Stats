@@ -1,0 +1,363 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SocialFeedActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: SocialFeedActivity (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SocialFeedActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/39)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SocialFeedActivity$1</td>
+  </tr>
+  <tr>
+    <td class="name">SocialFeedActivity$FeedWebSocketListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/49)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.widget.ImageButton;
+&nbsp;import android.widget.ListView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.annotation.NonNull;
+&nbsp;import androidx.annotation.Nullable;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import okhttp3.OkHttpClient;
+&nbsp;import okhttp3.Request;
+&nbsp;import okhttp3.WebSocket;
+&nbsp;import okhttp3.WebSocketListener;
+&nbsp;import okio.ByteString;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity class representing the Social Feed in the Fitness Tracker app.
+&nbsp; * Displays a feed of messages or posts and allows navigation to other parts of the app.
+&nbsp; * Utilizes WebSocket for real-time updates.
+&nbsp; *
+&nbsp; * @author Tyler Kearney
+&nbsp; */
+<b class="nc">&nbsp;public class SocialFeedActivity extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private ListView feedListView;
+&nbsp;    private FeedAdapter feedAdapter;
+<b class="nc">&nbsp;    private ArrayList&lt;FeedItem&gt; feedItems = new ArrayList&lt;&gt;();</b>
+&nbsp;    private static OkHttpClient client;  // Singleton OkHttpClient
+&nbsp;    private WebSocket webSocket;
+&nbsp;    private static final String BASE_URL = &quot;ws://coms-3090-014.class.las.iastate.edu:8080/ws&quot;; // WebSocket endpoint
+&nbsp;
+&nbsp;    // Navigation bar buttons
+&nbsp;    private ImageButton btnProfile;
+&nbsp;    private ImageButton btnFriends;
+&nbsp;    private ImageButton btnLiftSearch;
+&nbsp;    private ImageButton btnCalendar;
+&nbsp;    private ImageButton btnSettings;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity and sets up the UI and WebSocket connection.
+&nbsp;     *
+&nbsp;     * @param savedInstanceState Contains the most recent data, if available.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_social_feed);</b>
+&nbsp;
+&nbsp;        // Ensure OkHttpClient is initialized only once
+<b class="nc">&nbsp;        if (client == null) {</b>
+<b class="nc">&nbsp;            client = new OkHttpClient();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        setupUI();</b>
+<b class="nc">&nbsp;        connectWebSocket();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Configures the UI components, including ListView for the feed and navigation buttons.
+&nbsp;     */
+&nbsp;    private void setupUI() {
+<b class="nc">&nbsp;        feedListView = findViewById(R.id.feedListView);</b>
+<b class="nc">&nbsp;        feedAdapter = new FeedAdapter(this, feedItems);</b>
+<b class="nc">&nbsp;        feedListView.setAdapter(feedAdapter);</b>
+&nbsp;
+&nbsp;        // Initialize navigation buttons
+<b class="nc">&nbsp;        btnProfile = findViewById(R.id.btnProfile);</b>
+<b class="nc">&nbsp;        btnFriends = findViewById(R.id.btnFriends);</b>
+<b class="nc">&nbsp;        btnLiftSearch = findViewById(R.id.btnLiftSearch);</b>
+<b class="nc">&nbsp;        btnCalendar = findViewById(R.id.btnCalendar);</b>
+<b class="nc">&nbsp;        btnSettings = findViewById(R.id.btnSettings);</b>
+&nbsp;
+&nbsp;        // Set up click listeners for navigation buttons
+<b class="nc">&nbsp;        btnProfile.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(SocialFeedActivity.this, ProfileActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnFriends.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(SocialFeedActivity.this, ActivityFriends.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnLiftSearch.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(SocialFeedActivity.this, ActivityLiftSearch.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnCalendar.setOnClickListener(v -&gt; {</b>
+&nbsp;            // Uncomment and implement CalendarActivity if it exists
+&nbsp;            // Intent intent = new Intent(SocialFeedActivity.this, CalendarActivity.class);
+&nbsp;            // startActivity(intent);
+<b class="nc">&nbsp;        });</b>
+&nbsp;
+<b class="nc">&nbsp;        btnSettings.setOnClickListener(v -&gt; {</b>
+&nbsp;            // Uncomment and implement SettingsActivity if it exists
+&nbsp;            // Intent intent = new Intent(SocialFeedActivity.this, SettingsActivity.class);
+&nbsp;            // startActivity(intent);
+<b class="nc">&nbsp;        });</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Establishes a WebSocket connection to the server for real-time feed updates.
+&nbsp;     */
+&nbsp;    private void connectWebSocket() {
+<b class="nc">&nbsp;        if (webSocket != null) {</b>
+<b class="nc">&nbsp;            webSocket.close(1000, null);  // Close any existing WebSocket</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Request request = new Request.Builder().url(BASE_URL).build();</b>
+<b class="nc">&nbsp;        webSocket = client.newWebSocket(request, new FeedWebSocketListener());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Closes the WebSocket connection when the activity is destroyed.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onDestroy() {
+<b class="nc">&nbsp;        super.onDestroy();</b>
+<b class="nc">&nbsp;        if (webSocket != null) {</b>
+<b class="nc">&nbsp;            webSocket.close(1000, &quot;Activity destroyed&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * WebSocketListener class to handle WebSocket events such as messages, errors, and closures.
+&nbsp;     */
+<b class="nc">&nbsp;    private class FeedWebSocketListener extends WebSocketListener {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Called when the WebSocket connection is successfully opened.
+&nbsp;         *
+&nbsp;         * @param webSocket The active WebSocket connection.
+&nbsp;         * @param response The server&#39;s response to the connection.
+&nbsp;         */
+&nbsp;        @Override
+&nbsp;        public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
+<b class="nc">&nbsp;            Log.d(&quot;WebSocket&quot;, &quot;Connected to WebSocket&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Called when a text message is received from the WebSocket.
+&nbsp;         * Updates the feed with the received message.
+&nbsp;         *
+&nbsp;         * @param webSocket The active WebSocket connection.
+&nbsp;         * @param text The received text message.
+&nbsp;         */
+&nbsp;        @Override
+&nbsp;        public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+<b class="nc">&nbsp;            runOnUiThread(() -&gt; {</b>
+<b class="nc">&nbsp;                Log.d(&quot;WebSocket&quot;, &quot;Received message: &quot; + text);</b>
+<b class="nc">&nbsp;                updateFeedWithMessage(text);</b>
+&nbsp;            });
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Called when binary data is received (not currently used).
+&nbsp;         *
+&nbsp;         * @param webSocket The active WebSocket connection.
+&nbsp;         * @param bytes The received binary data.
+&nbsp;         */
+&nbsp;        @Override
+&nbsp;        public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
+<b class="nc">&nbsp;            Log.d(&quot;WebSocket&quot;, &quot;Received bytes: &quot; + bytes.hex());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Called when the WebSocket is closing.
+&nbsp;         *
+&nbsp;         * @param webSocket The active WebSocket connection.
+&nbsp;         * @param code The status code of the closure.
+&nbsp;         * @param reason The reason for closure.
+&nbsp;         */
+&nbsp;        @Override
+&nbsp;        public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+<b class="nc">&nbsp;            Log.d(&quot;WebSocket&quot;, &quot;Closing: &quot; + code + &quot;/&quot; + reason);</b>
+<b class="nc">&nbsp;            webSocket.close(1000, null);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Called when a WebSocket connection failure occurs.
+&nbsp;         *
+&nbsp;         * @param webSocket The active WebSocket connection.
+&nbsp;         * @param t The throwable error causing the failure.
+&nbsp;         * @param response The server&#39;s response, if any.
+&nbsp;         */
+&nbsp;        @Override
+&nbsp;        public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable okhttp3.Response response) {
+<b class="nc">&nbsp;            Log.e(&quot;WebSocket&quot;, &quot;Error: &quot; + t.getMessage(), t);</b>
+<b class="nc">&nbsp;            runOnUiThread(() -&gt; Toast.makeText(SocialFeedActivity.this, &quot;WebSocket connection failed&quot;, Toast.LENGTH_SHORT).show());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the feed with a new message received from the WebSocket.
+&nbsp;     *
+&nbsp;     * @param message The message to add to the feed.
+&nbsp;     */
+&nbsp;    private void updateFeedWithMessage(String message) {
+&nbsp;        // Add the received message directly as a FeedItem and update the adapter
+<b class="nc">&nbsp;        FeedItem newItem = new FeedItem(message);  // Adjusted FeedItem to take a single message string</b>
+<b class="nc">&nbsp;        feedItems.add(0, newItem); // Add to top of list</b>
+<b class="nc">&nbsp;        feedAdapter.notifyDataSetChanged();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CompletedWorkoutRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.CompletedWorkout</a>
+</div>
+
+<h1>Coverage Summary for Class: CompletedWorkoutRepository (coms309.workout.CompletedWorkout)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">CompletedWorkoutRepository$MockitoMock$PsS0shHQ</td>
+  </tr>
+  <tr>
+    <td class="name">CompletedWorkoutRepository$MockitoMock$PsS0shHQ$auxiliary$ocoKCWn8</td>
+  </tr>
+  <tr>
+    <td class="name">CompletedWorkoutRepository$MockitoMock$PsS0shHQ$auxiliary$V06FsJD0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.CompletedWorkout;
+&nbsp;
+&nbsp;import coms309.workout.LiftSet.LiftSet;
+&nbsp;import coms309.workout.Lifts.Lift;
+&nbsp;import coms309.workout.Users.User;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface CompletedWorkoutRepository extends JpaRepository&lt;CompletedWorkout, Long&gt;
+&nbsp;{
+&nbsp;    CompletedWorkout findById(int id);
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    void deleteById(int id);
+&nbsp;
+&nbsp;    CompletedWorkout findByName(String name);
+&nbsp;
+&nbsp;    CompletedWorkout findByNameAndUser(String name, User user);
+&nbsp;
+&nbsp;    CompletedWorkout findByNameAndUserAndDate(String name, User user, LocalDate date);
+&nbsp;
+&nbsp;    List&lt;CompletedWorkout&gt; findByUserUsernameOrderByDateAsc(String username);
+&nbsp;
+&nbsp;    List&lt;CompletedWorkout&gt; findByUserUsernameAndDate(String username, LocalDate date);
+&nbsp;
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT * FROM completed_workout cw WHERE cw.user like ?1 AND cw.date BETWEEN ?2 AND ?3&quot;, nativeQuery = true)
+&nbsp;    List&lt;CompletedWorkout&gt; getCompletedWorkoutsByUserInRange(String username, String startDate, String endDate);
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT ls.* &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot; +
+&nbsp;            &quot;WHERE cw.user like :username AND cw.date BETWEEN :startDate AND :endDate &quot; +
+&nbsp;            &quot;GROUP BY l.title&quot;, nativeQuery = true)
+&nbsp;    List&lt;LiftSet&gt; getLiftsByUserInRange(String username, String startDate, String endDate);
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT ls.* &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot; +
+&nbsp;            &quot;WHERE cw.user like :username AND cw.date BETWEEN :startDate AND :endDate AND l.title like :liftName &quot;, nativeQuery = true)
+&nbsp;    List&lt;LiftSet&gt; getLiftSetsByUserAndLiftTitleInRange(String username, String startDate, String endDate, String liftName);
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT l.title &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot; +
+&nbsp;            &quot;where cw.user like :username &quot; +
+&nbsp;            &quot;GROUP BY l.title&quot;, nativeQuery = true)
+&nbsp;    List&lt;String&gt; getLiftsByUser(String username);
+&nbsp;
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT l.title &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot; +
+&nbsp;            &quot;WHERE cw.user = :username &quot;+
+&nbsp;            &quot;AND (&quot;+
+&nbsp;                    &quot;cw.date BETWEEN :startDate1 AND :endDate1 &quot;+
+&nbsp;            &quot;OR cw.date BETWEEN :startDate2 AND :endDate2) &quot;+
+&nbsp;    &quot;GROUP BY l.title &quot; +
+&nbsp;        &quot;HAVING &quot;+
+&nbsp;    &quot;SUM(CASE WHEN cw.date BETWEEN :startDate1 AND :endDate1 THEN 1 ELSE 0 END) &gt; 0 &quot; +
+&nbsp;    &quot;AND SUM(CASE WHEN cw.date BETWEEN :startDate2 AND :endDate2 THEN 1 ELSE 0 END) &gt; 0&quot;, nativeQuery = true)
+&nbsp;    List&lt;String&gt; getLiftsByUserInTwoRange(String username, String startDate1, String endDate1, String startDate2, String endDate2);
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT tab.muscle_group FROM(SELECT l.* &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot;+
+&nbsp;            &quot;WHERE cw.user = :username &quot;+
+&nbsp;            &quot;AND (&quot;+
+&nbsp;            &quot;cw.date BETWEEN :startDate1 AND :endDate1 &quot;+
+&nbsp;            &quot;OR cw.date BETWEEN :startDate2 AND :endDate2 ) &quot;+
+&nbsp;            &quot;GROUP BY l.title &quot; +
+&nbsp;            &quot;HAVING &quot;+
+&nbsp;            &quot;SUM(CASE WHEN cw.date BETWEEN :startDate1 AND :endDate1 THEN 1 ELSE 0 END) &gt; 0 &quot; +
+&nbsp;            &quot;AND SUM(CASE WHEN cw.date BETWEEN :startDate2 AND :endDate2 THEN 1 ELSE 0 END) &gt; 0) as tab &quot; +
+&nbsp;            &quot;GROUP BY tab.muscle_group&quot;, nativeQuery = true)
+&nbsp;    List&lt;String&gt; getMuscleGroupsByUserInTwoRange(String username, String startDate1, String endDate1, String startDate2, String endDate2);
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT MAX(s.weight) &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_set_sets s ON s.lift_set_id = ls.id &quot;+
+&nbsp;            &quot;WHERE cw.user = :username &quot; +
+&nbsp;            &quot;AND lower(l.title) like lower(CONCAT(&#39;%&#39;,:key,&#39;%&#39;))&quot;
+&nbsp;            , nativeQuery = true)
+&nbsp;    Double getMaxByUserAndContainsKey(String username, String key);
+&nbsp;
+&nbsp;    @Query(value = &quot;SELECT l.title &quot; +
+&nbsp;            &quot;FROM Default_Workouts.completed_workout cw &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lift_sets ls ON cw.id = ls.completed_workout_id &quot; +
+&nbsp;            &quot;JOIN Default_Workouts.lifts l ON ls.lift_id = l.id &quot;+
+&nbsp;            &quot;WHERE cw.user = :username &quot; +
+&nbsp;            &quot;AND l.muscle_group like :muscleGroup &quot;+
+&nbsp;            &quot;AND (&quot;+
+&nbsp;            &quot;cw.date BETWEEN :startDate1 AND :endDate1 &quot;+
+&nbsp;            &quot;OR cw.date BETWEEN :startDate2 AND :endDate2 ) &quot;+
+&nbsp;            &quot;GROUP BY l.title &quot; +
+&nbsp;            &quot;HAVING &quot;+
+&nbsp;            &quot;SUM(CASE WHEN cw.date BETWEEN :startDate1 AND :endDate1 THEN 1 ELSE 0 END) &gt; 0 &quot; +
+&nbsp;            &quot;AND SUM(CASE WHEN cw.date BETWEEN :startDate2 AND :endDate2 THEN 1 ELSE 0 END) &gt; 0&quot;, nativeQuery = true)
+&nbsp;    List&lt;String&gt; getLiftsByUserInTwoRangeByMuscleGroup(String username, String startDate1, String endDate1, String startDate2, String endDate2, String muscleGroup);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 15:18</div>
+</div>
+</body>
+</html>

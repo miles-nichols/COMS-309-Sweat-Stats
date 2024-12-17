@@ -1,0 +1,374 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivityWorkoutDetails</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivityWorkoutDetails (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivityWorkoutDetails</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/100)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ActivityWorkoutDetails$UpdateCallback</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/100)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Toast;
+&nbsp;import android.net.Uri;
+&nbsp;import com.android.volley.toolbox.StringRequest;
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;import com.google.android.material.floatingactionbutton.FloatingActionButton;
+&nbsp;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="nc">&nbsp;public class ActivityWorkoutDetails extends AppCompatActivity {</b>
+&nbsp;    private static final int LIFT_SEARCH_REQUEST_CODE = 100;
+&nbsp;
+&nbsp;    private RecyclerView recyclerView;
+&nbsp;    private AdapterLift adapterLift;
+&nbsp;    private List&lt;ObjectLift&gt; liftList;
+&nbsp;    private String workoutName;          // Name currently used by server
+&nbsp;    private String originalWorkoutName;  // Original name from intent (for reference)
+&nbsp;    private EditText etWorkoutName;      // Editable workout name field
+&nbsp;    private EditText etWorkoutDescription; // Editable workout description field
+&nbsp;    private Button btnSaveWorkout;
+&nbsp;    private FloatingActionButton btnAddLift;
+&nbsp;
+&nbsp;    // To track current description from server
+<b class="nc">&nbsp;    private String currentDescription = &quot;&quot;;</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_workout_details);</b>
+&nbsp;
+&nbsp;        // Retrieve workout name and lift list from Intent
+<b class="nc">&nbsp;        workoutName = getIntent().getStringExtra(&quot;workoutName&quot;);</b>
+<b class="nc">&nbsp;        originalWorkoutName = workoutName; // Keep a record of the original name</b>
+<b class="nc">&nbsp;        liftList = (List&lt;ObjectLift&gt;) getIntent().getSerializableExtra(&quot;liftList&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (liftList == null) {</b>
+<b class="nc">&nbsp;            liftList = new ArrayList&lt;&gt;();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Set up RecyclerView and adapter
+<b class="nc">&nbsp;        recyclerView = findViewById(R.id.recyclerViewLifts);</b>
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+<b class="nc">&nbsp;        adapterLift = new AdapterLift(liftList, this::removeLift);</b>
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapterLift);</b>
+&nbsp;
+&nbsp;        // Initialize EditTexts for name and description
+<b class="nc">&nbsp;        etWorkoutName = findViewById(R.id.etWorkoutName);</b>
+<b class="nc">&nbsp;        etWorkoutDescription = findViewById(R.id.etWorkoutDescription);</b>
+&nbsp;
+&nbsp;        // Set initial name in EditText
+<b class="nc">&nbsp;        etWorkoutName.setText(workoutName);</b>
+&nbsp;
+&nbsp;        // Set up Save Workout button
+<b class="nc">&nbsp;        btnSaveWorkout = findViewById(R.id.btnSaveWorkout);</b>
+<b class="nc">&nbsp;        btnSaveWorkout.setOnClickListener(v -&gt; saveWorkout());</b>
+&nbsp;
+&nbsp;        // Set up Add Lift FAB
+<b class="nc">&nbsp;        btnAddLift = findViewById(R.id.btnAddLift);</b>
+<b class="nc">&nbsp;        btnAddLift.setOnClickListener(v -&gt; navigateToLiftSearch());</b>
+&nbsp;
+&nbsp;        // Fetch current workout details from backend
+<b class="nc">&nbsp;        fetchWorkoutDetails();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchWorkoutDetails() {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/workout/&quot; + originalWorkoutName;</b>
+<b class="nc">&nbsp;        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+&nbsp;                    // Parse response for current name and description
+<b class="nc">&nbsp;                    String fetchedName = response.optString(&quot;name&quot;, workoutName);</b>
+<b class="nc">&nbsp;                    currentDescription = response.optString(&quot;description&quot;, &quot;&quot;);</b>
+&nbsp;
+&nbsp;                    // Update UI fields
+<b class="nc">&nbsp;                    etWorkoutName.setText(fetchedName);</b>
+<b class="nc">&nbsp;                    etWorkoutDescription.setText(currentDescription);</b>
+&nbsp;                },
+<b class="nc">&nbsp;                error -&gt; Toast.makeText(this, &quot;Error fetching workout details&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;        );
+<b class="nc">&nbsp;        Volley.newRequestQueue(this).add(getRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void removeLift(ObjectLift lift) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/workout/&quot; + workoutName + &quot;/lift/&quot; + lift.getTitle();</b>
+<b class="nc">&nbsp;        JsonObjectRequest deleteRequest = new JsonObjectRequest(Request.Method.DELETE, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    liftList.remove(lift);</b>
+<b class="nc">&nbsp;                    adapterLift.notifyDataSetChanged();</b>
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Lift removed: &quot; + lift.getTitle(), Toast.LENGTH_SHORT).show();</b>
+&nbsp;                },
+<b class="nc">&nbsp;                error -&gt; Toast.makeText(this, &quot;Error removing lift: &quot; + error.getMessage(), Toast.LENGTH_SHORT).show());</b>
+<b class="nc">&nbsp;        Volley.newRequestQueue(this).add(deleteRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void saveWorkout() {
+<b class="nc">&nbsp;        String newName = etWorkoutName.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String newDescription = etWorkoutDescription.getText().toString().trim();</b>
+&nbsp;
+&nbsp;        // Update name if changed
+<b class="nc">&nbsp;        if (!newName.equals(originalWorkoutName)) {</b>
+<b class="nc">&nbsp;            updateWorkoutName(originalWorkoutName, newName, nameSuccess -&gt; {</b>
+<b class="nc">&nbsp;                if (nameSuccess) {</b>
+&nbsp;                    // If name updated, set references
+<b class="nc">&nbsp;                    workoutName = newName;</b>
+<b class="nc">&nbsp;                    originalWorkoutName = newName;</b>
+&nbsp;                    // Now update description
+<b class="nc">&nbsp;                    updateWorkoutDescription(newDescription, descSuccess -&gt; {</b>
+&nbsp;                        // Then add lifts
+<b class="nc">&nbsp;                        addLiftsToWorkout();</b>
+&nbsp;                    });
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Failed to update workout name&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                }
+&nbsp;            });
+&nbsp;        } else {
+&nbsp;            // Name not changed, just update description
+<b class="nc">&nbsp;            updateWorkoutDescription(newDescription, descSuccess -&gt; {</b>
+&nbsp;                // Then add lifts
+<b class="nc">&nbsp;                addLiftsToWorkout();</b>
+&nbsp;            });
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateWorkoutName(String oldName, String newName, UpdateCallback callback) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/workout/&quot; + oldName + &quot;?newName=&quot; + Uri.encode(newName);</b>
+<b class="nc">&nbsp;        JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Workout name updated!&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                    callback.onUpdateCompleted(true);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Error updating workout name&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                    callback.onUpdateCompleted(false);</b>
+&nbsp;                }
+&nbsp;        );
+<b class="nc">&nbsp;        Volley.newRequestQueue(this).add(putRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateWorkoutDescription(String newDescription, UpdateCallback callback) {
+&nbsp;        // Consider URL-encoding the description
+<b class="nc">&nbsp;        String encodedDescription = Uri.encode(newDescription);</b>
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/workout/&quot; + workoutName</b>
+&nbsp;                + &quot;/description?description=&quot; + encodedDescription;
+&nbsp;
+<b class="nc">&nbsp;        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Workout description updated!&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                    currentDescription = newDescription;</b>
+<b class="nc">&nbsp;                    callback.onUpdateCompleted(true);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Error updating description: &quot; + error.getMessage(), Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                    callback.onUpdateCompleted(false);</b>
+&nbsp;                }
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        Volley.newRequestQueue(this).add(putRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void addLiftsToWorkout() {
+<b class="nc">&nbsp;        if (liftList.isEmpty()) {</b>
+&nbsp;            // No lifts to add, just end here
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;Workout saved successfully!&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(this, ActivityMyWorkouts.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+<b class="nc">&nbsp;            finish();</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        final int[] completedRequests = {0};</b>
+<b class="nc">&nbsp;        for (ObjectLift lift : liftList) {</b>
+<b class="nc">&nbsp;            String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/workout/&quot; + workoutName + &quot;?liftName=&quot; + Uri.encode(lift.getTitle());</b>
+<b class="nc">&nbsp;            JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, null,</b>
+&nbsp;                    response -&gt; {
+<b class="nc">&nbsp;                        completedRequests[0]++;</b>
+<b class="nc">&nbsp;                        if (completedRequests[0] == liftList.size()) {</b>
+<b class="nc">&nbsp;                            Toast.makeText(this, &quot;Workout saved successfully!&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                            Intent intent = new Intent(this, ActivityMyWorkouts.class);</b>
+<b class="nc">&nbsp;                            startActivity(intent);</b>
+<b class="nc">&nbsp;                            finish();</b>
+&nbsp;                        }
+&nbsp;                    },
+&nbsp;                    error -&gt; {
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;Error adding lift: &quot; + lift.getTitle(), Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                        completedRequests[0]++;</b>
+<b class="nc">&nbsp;                        if (completedRequests[0] == liftList.size()) {</b>
+<b class="nc">&nbsp;                            Toast.makeText(this, &quot;Workout saved with some errors!&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                            Intent intent = new Intent(this, ActivityMyWorkouts.class);</b>
+<b class="nc">&nbsp;                            startActivity(intent);</b>
+<b class="nc">&nbsp;                            finish();</b>
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;            );
+<b class="nc">&nbsp;            Volley.newRequestQueue(this).add(postRequest);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void navigateToLiftSearch() {
+<b class="nc">&nbsp;        Intent intent = new Intent(this, ActivityLiftSearch.class);</b>
+<b class="nc">&nbsp;        startActivityForResult(intent, LIFT_SEARCH_REQUEST_CODE);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+<b class="nc">&nbsp;        super.onActivityResult(requestCode, resultCode, data);</b>
+<b class="nc">&nbsp;        if (requestCode == LIFT_SEARCH_REQUEST_CODE &amp;&amp; resultCode == RESULT_OK) {</b>
+<b class="nc">&nbsp;            HashMap&lt;String, String&gt; selectedLift = (HashMap&lt;String, String&gt;) data.getSerializableExtra(&quot;selectedLift&quot;);</b>
+<b class="nc">&nbsp;            if (selectedLift != null) {</b>
+<b class="nc">&nbsp;                liftList.add(new ObjectLift(</b>
+<b class="nc">&nbsp;                        selectedLift.get(&quot;title&quot;),</b>
+<b class="nc">&nbsp;                        selectedLift.get(&quot;description&quot;),</b>
+<b class="nc">&nbsp;                        selectedLift.get(&quot;type&quot;),</b>
+<b class="nc">&nbsp;                        selectedLift.get(&quot;muscleGroup&quot;),</b>
+<b class="nc">&nbsp;                        selectedLift.get(&quot;equipment&quot;),</b>
+&nbsp;                        &quot;&quot; // No level provided
+&nbsp;                ));
+<b class="nc">&nbsp;                adapterLift.notifyDataSetChanged();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    interface UpdateCallback {
+&nbsp;        void onUpdateCompleted(boolean success);
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

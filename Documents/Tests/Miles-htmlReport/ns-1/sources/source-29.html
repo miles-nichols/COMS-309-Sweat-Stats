@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ObjectSet</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ObjectSet (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ObjectSet</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    37.5%
+  </span>
+  <span class="absValue">
+    (3/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;// ObjectSet.java
+&nbsp;
+&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a set in a workout, consisting of the number of repetitions (reps) and the weight used.
+&nbsp; *
+&nbsp; * @author
+&nbsp; */
+&nbsp;public class ObjectSet implements Serializable {
+&nbsp;    private int reps;
+&nbsp;    private double weight;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to initialize the set with reps and weight.
+&nbsp;     *
+&nbsp;     * @param reps   The number of repetitions for the set.
+&nbsp;     * @param weight The weight used for the set in kilograms.
+&nbsp;     */
+<b class="fc">&nbsp;    public ObjectSet(int reps, double weight) {</b>
+<b class="fc">&nbsp;        this.reps = reps;</b>
+<b class="fc">&nbsp;        this.weight = weight;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the number of repetitions in the set.
+&nbsp;     *
+&nbsp;     * @return The number of reps.
+&nbsp;     */
+&nbsp;    public int getReps() {
+<b class="nc">&nbsp;        return reps;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the number of repetitions for the set.
+&nbsp;     *
+&nbsp;     * @param reps The number of reps to set.
+&nbsp;     */
+&nbsp;    public void setReps(int reps) {
+<b class="nc">&nbsp;        this.reps = reps;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the weight used in the set.
+&nbsp;     *
+&nbsp;     * @return The weight in kilograms.
+&nbsp;     */
+&nbsp;    public double getWeight() {
+<b class="nc">&nbsp;        return weight;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the weight used for the set.
+&nbsp;     *
+&nbsp;     * @param weight The weight in kilograms to set.
+&nbsp;     */
+&nbsp;    public void setWeight(double weight) {
+<b class="nc">&nbsp;        this.weight = weight;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Override toString() for better readability
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="nc">&nbsp;        return reps + &quot; reps @ &quot; + weight + &quot; kg&quot;;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,298 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AdminSettingsActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminSettingsActivity (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminSettingsActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/69)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.view.View;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.RequestQueue;
+&nbsp;import com.android.volley.Response;
+&nbsp;import com.android.volley.VolleyError;
+&nbsp;import com.android.volley.toolbox.JsonArrayRequest;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;
+&nbsp;import org.json.JSONArray;
+&nbsp;import org.json.JSONException;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="nc">&nbsp;public class AdminSettingsActivity extends AppCompatActivity implements ReportsAdapter.OnReportActionListener {</b>
+&nbsp;
+&nbsp;    private RecyclerView recyclerView;
+&nbsp;    private ReportsAdapter adapter;
+&nbsp;    private List&lt;Report&gt; reports;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_admin_settings);</b>
+&nbsp;
+<b class="nc">&nbsp;        recyclerView = findViewById(R.id.recyclerView);</b>
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+&nbsp;
+<b class="nc">&nbsp;        reports = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        adapter = new ReportsAdapter(reports, this);</b>
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapter);</b>
+&nbsp;
+<b class="nc">&nbsp;        fetchReports();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchReports() {
+<b class="nc">&nbsp;        reports.clear();</b>
+<b class="nc">&nbsp;        adapter.notifyDataSetChanged();</b>
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/report&quot;; // Modify with the correct URL</b>
+&nbsp;
+<b class="nc">&nbsp;        Log.d(&quot;AdminSettingsActivity&quot;, &quot;Making request to fetch reports...&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    Log.d(&quot;AdminSettingsActivity&quot;, &quot;Fetching reports...&quot;);</b>
+<b class="nc">&nbsp;                    Log.d(&quot;AdminSettingsActivity&quot;, &quot;Response: &quot; + response.toString());</b>
+&nbsp;
+&nbsp;                    try {
+&nbsp;                        // Iterate over the reports
+<b class="nc">&nbsp;                        for (int i = 0; i &lt; response.length(); i++) {</b>
+<b class="nc">&nbsp;                            JSONObject reportJson = response.getJSONObject(i);</b>
+&nbsp;
+&nbsp;                            // Extract the &quot;reported&quot; object, and get necessary fields
+<b class="nc">&nbsp;                            JSONObject reported = reportJson.getJSONObject(&quot;reported&quot;);</b>
+<b class="nc">&nbsp;                            String username = reported.getString(&quot;username&quot;);</b>
+<b class="nc">&nbsp;                            String role = reported.getString(&quot;role&quot;);</b>
+<b class="nc">&nbsp;                            int strikes = reported.getInt(&quot;strikes&quot;);</b>
+&nbsp;
+&nbsp;                            // Extract other report fields
+<b class="nc">&nbsp;                            String summary = reportJson.getString(&quot;summary&quot;);</b>
+<b class="nc">&nbsp;                            String description = reportJson.getString(&quot;description&quot;);</b>
+<b class="nc">&nbsp;                            String reportDate = reportJson.getString(&quot;reportDate&quot;);</b>
+<b class="nc">&nbsp;                            boolean completed = reportJson.getBoolean(&quot;completed&quot;);</b>
+<b class="nc">&nbsp;                            int reportId = reportJson.getInt(&quot;reportId&quot;);</b>
+<b class="nc">&nbsp;                            String reportedUsername = reportJson.getString(&quot;reported_username&quot;);</b>
+<b class="nc">&nbsp;                            String reporterUsername = reportJson.getString(&quot;reporter_username&quot;);</b>
+&nbsp;
+&nbsp;                            // Create a Report object with the extracted data
+<b class="nc">&nbsp;                            Report report = new Report(username, role, strikes, summary, description, reportDate,</b>
+&nbsp;                                    completed, reportId, reportedUsername, reporterUsername);
+&nbsp;
+&nbsp;                            // Add the report to the list
+<b class="nc">&nbsp;                            reports.add(report);</b>
+&nbsp;                        }
+&nbsp;
+&nbsp;                        // Notify the adapter that data has changed
+<b class="nc">&nbsp;                        adapter.notifyDataSetChanged();</b>
+<b class="nc">&nbsp;                    } catch (JSONException e) {</b>
+<b class="nc">&nbsp;                        e.printStackTrace();</b>
+&nbsp;                    }
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Log.e(&quot;AdminSettingsActivity&quot;, &quot;Error in request: &quot; + error.toString());  // Log error response</b>
+<b class="nc">&nbsp;                    Toast.makeText(AdminSettingsActivity.this, &quot;Error fetching reports&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+&nbsp;        // Send the request
+<b class="nc">&nbsp;        RequestQueue queue = Volley.newRequestQueue(this);</b>
+<b class="nc">&nbsp;        queue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void onAccept(String summary) {
+&nbsp;        // Find the report by its summary
+<b class="nc">&nbsp;        Report report = findReportBySummary(summary);</b>
+<b class="nc">&nbsp;        if (report != null) {</b>
+<b class="nc">&nbsp;            String reporterUsername = report.getReporterUsername();</b>
+<b class="nc">&nbsp;            String reportedUsername = report.getReportedUsername();</b>
+<b class="nc">&nbsp;            String reportSummary = report.getSummary();</b>
+&nbsp;
+&nbsp;            // Construct the URL for resolving the report
+<b class="nc">&nbsp;            String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/report/resolve?reporterUsername=&quot;</b>
+&nbsp;                    + reporterUsername + &quot;&amp;reportedUsername=&quot; + reportedUsername + &quot;&amp;summary=&quot; + reportSummary;
+&nbsp;
+&nbsp;            // Make the PUT request to resolve the report
+<b class="nc">&nbsp;            JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, null,</b>
+&nbsp;                    response -&gt; {
+&nbsp;                        // Handle success response
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;Report accepted&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                        fetchReports(); // Refresh the report list</b>
+&nbsp;                    },
+&nbsp;                    error -&gt; {
+&nbsp;                        // Handle error
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;Failed to accept report&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                    });
+&nbsp;
+<b class="nc">&nbsp;            RequestQueue queue = Volley.newRequestQueue(this);</b>
+<b class="nc">&nbsp;            queue.add(request);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        fetchReports();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void onDismiss(String summary) {
+&nbsp;        // Find the report by its summary
+<b class="nc">&nbsp;        Report report = findReportBySummary(summary);</b>
+<b class="nc">&nbsp;        if (report != null) {</b>
+<b class="nc">&nbsp;            String reporterUsername = report.getReporterUsername();</b>
+<b class="nc">&nbsp;            String reportedUsername = report.getReportedUsername();</b>
+<b class="nc">&nbsp;            String reportSummary = report.getSummary();</b>
+&nbsp;
+&nbsp;            // Construct the URL for dismissing the report
+<b class="nc">&nbsp;            String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/report/dismiss?reporterUsername=&quot;</b>
+&nbsp;                    + reporterUsername + &quot;&amp;reportedUsername=&quot; + reportedUsername + &quot;&amp;summary=&quot; + reportSummary;
+&nbsp;
+&nbsp;            // Make the PUT request to dismiss the report
+<b class="nc">&nbsp;            JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, null,</b>
+&nbsp;                    response -&gt; {
+&nbsp;                        // Handle success response
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;Report dismissed&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                        fetchReports(); // Refresh the report list</b>
+&nbsp;                    },
+&nbsp;                    error -&gt; {
+&nbsp;                        // Handle error
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;Failed to dismiss report&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                    });
+&nbsp;
+<b class="nc">&nbsp;            RequestQueue queue = Volley.newRequestQueue(this);</b>
+<b class="nc">&nbsp;            queue.add(request);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        fetchReports();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Helper method to find a report by its summary
+&nbsp;    private Report findReportBySummary(String summary) {
+<b class="nc">&nbsp;        for (Report report : reports) {</b>
+<b class="nc">&nbsp;            if (report.getSummary().equals(summary)) {</b>
+<b class="nc">&nbsp;                return report;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return null; // Return null if the report is not found</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Report&gt; getReports() {
+<b class="nc">&nbsp;        return reports;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

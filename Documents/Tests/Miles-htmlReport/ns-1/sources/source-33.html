@@ -1,0 +1,213 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > VolleySingleton</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: VolleySingleton (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VolleySingleton</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">VolleySingleton$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Context;
+&nbsp;import android.graphics.Bitmap;
+&nbsp;import android.util.LruCache;
+&nbsp;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.RequestQueue;
+&nbsp;import com.android.volley.toolbox.ImageLoader;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;
+&nbsp;public class VolleySingleton {
+&nbsp;
+&nbsp;    private static VolleySingleton instance;
+&nbsp;    private RequestQueue requestQueue;
+&nbsp;    private ImageLoader imageLoader;
+&nbsp;    private static Context ctx;
+&nbsp;
+<b class="nc">&nbsp;    private VolleySingleton(Context context) {</b>
+<b class="nc">&nbsp;        ctx = context;</b>
+<b class="nc">&nbsp;        requestQueue = getRequestQueue();</b>
+&nbsp;
+<b class="nc">&nbsp;        imageLoader = new ImageLoader(requestQueue,</b>
+<b class="nc">&nbsp;                new ImageLoader.ImageCache() {</b>
+<b class="nc">&nbsp;                    private final LruCache&lt;String, Bitmap&gt;</b>
+&nbsp;                            cache = new LruCache&lt;String, Bitmap&gt;(20);
+&nbsp;
+&nbsp;                    @Override
+&nbsp;                    public Bitmap getBitmap(String url) {
+<b class="nc">&nbsp;                        return cache.get(url);</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                    @Override
+&nbsp;                    public void putBitmap(String url, Bitmap bitmap) {
+<b class="nc">&nbsp;                        cache.put(url, bitmap);</b>
+&nbsp;                    }
+&nbsp;                });
+&nbsp;    }
+&nbsp;
+&nbsp;    public static synchronized VolleySingleton getInstance(Context context) {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new VolleySingleton(context);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public RequestQueue getRequestQueue() {
+<b class="nc">&nbsp;        if (requestQueue == null) {</b>
+&nbsp;            // getApplicationContext() is key, it keeps you from leaking the
+&nbsp;            // Activity or BroadcastReceiver if someone passes one in.
+<b class="nc">&nbsp;            requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return requestQueue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public &lt;T&gt; void addToRequestQueue(Request&lt;T&gt; req) {
+<b class="nc">&nbsp;        getRequestQueue().add(req);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ImageLoader getImageLoader() {
+<b class="nc">&nbsp;        return imageLoader;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

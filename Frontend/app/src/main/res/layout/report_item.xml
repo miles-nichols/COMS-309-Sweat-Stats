@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- Username -->
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reported User: "
+        android:textSize="16sp"
+        android:paddingBottom="4dp" />
+
+    <!-- Reporter -->
+    <TextView
+        android:id="@+id/reporterTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reporter: "
+        android:textSize="16sp"
+        android:paddingBottom="4dp" />
+
+    <!-- Summary -->
+    <TextView
+        android:id="@+id/summaryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Summary: "
+        android:textSize="16sp"
+        android:paddingBottom="4dp" />
+
+    <!-- Report Date -->
+    <TextView
+        android:id="@+id/reportDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report Date: "
+        android:textSize="16sp"
+        android:paddingBottom="4dp" />
+
+    <!-- Strikes -->
+    <TextView
+        android:id="@+id/strikesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strikes: "
+        android:textSize="16sp"
+        android:paddingBottom="4dp" />
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/acceptButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Accept" />
+
+        <Button
+            android:id="@+id/dismissButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dismiss" />
+
+    </LinearLayout>
+</LinearLayout>

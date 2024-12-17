@@ -1,0 +1,407 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivityLogin</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivityLogin (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivityLogin</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ActivityLogin$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ActivityLogin$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ActivityLogin$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ActivityLogin$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/62)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import static androidx.compose.ui.semantics.SemanticsPropertiesKt.setText;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.view.View;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Toast;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.Response;
+&nbsp;import com.android.volley.VolleyError;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;import com.android.volley.toolbox.StringRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;
+&nbsp;import org.json.JSONException;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity that handles user login functionality in the fitness tracker application.
+&nbsp; * This activity allows the user to input their username and password, and then attempts to log in
+&nbsp; * by making a POST request to the backend. If login is successful, the user is redirected to the home screen.
+&nbsp; *
+&nbsp; * @author Miles Nichols
+&nbsp; */
+<b class="nc">&nbsp;public class ActivityLogin extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private EditText usernameEditText;
+&nbsp;    private EditText passwordEditText;
+&nbsp;    private Button loginButton;
+&nbsp;    private Button signupButton;
+&nbsp;    private static String USERNAME;
+&nbsp;    private static String PASSWORD;
+&nbsp;    private static String role;
+&nbsp;
+<b class="nc">&nbsp;    private String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/login&quot;;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the login activity, sets up the UI elements and listeners for login and sign-up buttons.
+&nbsp;     * @param savedInstanceState The saved instance state of the activity.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_login);</b>
+&nbsp;
+<b class="nc">&nbsp;        usernameEditText = findViewById(R.id.login_username_edt);</b>
+<b class="nc">&nbsp;        passwordEditText = findViewById(R.id.login_password_edt);</b>
+<b class="nc">&nbsp;        loginButton = findViewById(R.id.login_login_btn);</b>
+<b class="nc">&nbsp;        signupButton = findViewById(R.id.login_signup_btn);</b>
+&nbsp;
+<b class="nc">&nbsp;        usernameEditText.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        passwordEditText.setText(&quot;&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        loginButton.setOnClickListener(new View.OnClickListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void onClick(View v) {
+<b class="nc">&nbsp;                String username = usernameEditText.getText().toString();</b>
+<b class="nc">&nbsp;                String password = passwordEditText.getText().toString();</b>
+<b class="nc">&nbsp;                USERNAME = username;</b>
+<b class="nc">&nbsp;                PASSWORD = password;</b>
+<b class="nc">&nbsp;                fetchUserRole(username, password);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        signupButton.setOnClickListener(new View.OnClickListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void onClick(View v) {
+<b class="nc">&nbsp;                Intent intent = new Intent(ActivityLogin.this, ActivitySignup.class);</b>
+<b class="nc">&nbsp;                startActivity(intent);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Makes a POST request to the backend to authenticate the user with the provided username and password.
+&nbsp;     * If the login is successful, the user is redirected to the home screen.
+&nbsp;     * @param username The username entered by the user.
+&nbsp;     * @param password The password entered by the user.
+&nbsp;     */
+&nbsp;    private void makeJsonArrayReq(String username, String password) {
+<b class="nc">&nbsp;        JSONObject requestBody = new JSONObject();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            requestBody.put(&quot;username&quot;, username);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;password&quot;, password);</b>
+<b class="nc">&nbsp;        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(</b>
+&nbsp;                Request.Method.POST,
+&nbsp;                url,
+&nbsp;                requestBody,
+<b class="nc">&nbsp;                new Response.Listener&lt;JSONObject&gt;() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onResponse(JSONObject response) {
+&nbsp;                        try {
+<b class="nc">&nbsp;                            String responseMessage = response.getString(&quot;message&quot;);</b>
+<b class="nc">&nbsp;                            if(responseMessage.equals(&quot;Login successful&quot;)) {</b>
+<b class="nc">&nbsp;                                Intent intent = new Intent(ActivityLogin.this, ActivityHomeScreen.class);</b>
+<b class="nc">&nbsp;                                startActivity(intent);</b>
+<b class="nc">&nbsp;                            } else if (responseMessage.equals(&quot;Incorrect password&quot;)) {</b>
+<b class="nc">&nbsp;                                Toast.makeText(ActivityLogin.this, &quot;Login failed.&quot;, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                            } else if (responseMessage.equals(&quot;User not found with username: &quot; + USERNAME)) {</b>
+<b class="nc">&nbsp;                                Toast.makeText(ActivityLogin.this, &quot;This account does not exist, please make an account!&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                            else if(responseMessage.equals(&quot;Too many strikes&quot;)){</b>
+<b class="nc">&nbsp;                                Toast.makeText(ActivityLogin.this, &quot;This account has been banned!&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;                            e.printStackTrace();</b>
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;                },
+<b class="nc">&nbsp;                new Response.ErrorListener() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onErrorResponse(VolleyError error) {
+<b class="nc">&nbsp;                        Log.e(&quot;Volley Error&quot;, error.toString());</b>
+<b class="nc">&nbsp;                        Toast.makeText(ActivityLogin.this, &quot;Error occurred, please try again later&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;        );
+<b class="nc">&nbsp;        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the username entered by the user.
+&nbsp;     * @return The username as a string.
+&nbsp;     */
+&nbsp;    public static String getUsername() {
+<b class="nc">&nbsp;        return USERNAME;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the password entered by the user.
+&nbsp;     * @return The password as a string.
+&nbsp;     */
+&nbsp;    public static String getPassword() {
+<b class="nc">&nbsp;        return PASSWORD;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUsername(String username) {
+<b class="nc">&nbsp;        USERNAME = username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchUserRole(final String username, final String password) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/role?username=&quot; + username;</b>
+<b class="nc">&nbsp;        StringRequest request = new StringRequest(Request.Method.GET, url,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String role = response.trim().replace(&quot;\&quot;&quot;, &quot;&quot;).toUpperCase();</b>
+<b class="nc">&nbsp;                    handleUserRole(role, username, password);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    error.printStackTrace();</b>
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Failed to fetch role&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+<b class="nc">&nbsp;        Volley.newRequestQueue(this).add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    private void handleUserRole(String role, String username, String password) {
+<b class="nc">&nbsp;        Log.d(&quot;Role&quot;, &quot;Fetched role: &quot; + role);  // Log the role for debugging</b>
+&nbsp;
+<b class="nc">&nbsp;        switch (role) {</b>
+&nbsp;            case &quot;ADMIN&quot;:
+&nbsp;            case &quot;TRAINER&quot;:
+&nbsp;            case &quot;USER&quot;:
+<b class="nc">&nbsp;                setRole(role);  // Save role</b>
+<b class="nc">&nbsp;                makeJsonArrayReq(username, password);  // Proceed with login</b>
+&nbsp;                break;
+&nbsp;            default:
+<b class="nc">&nbsp;                Log.e(&quot;Role Error&quot;, &quot;Unknown role: &quot; + role);  // Log the unknown role</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Unknown role: &quot; + role, Toast.LENGTH_SHORT).show();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    public static String getUserLevel() {
+<b class="nc">&nbsp;        return role;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setRole(String role) {
+<b class="nc">&nbsp;        this.role = role;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

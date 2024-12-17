@@ -1,0 +1,243 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CompletedWorkoutController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.CompletedWorkout</a>
+</div>
+
+<h1>Coverage Summary for Class: CompletedWorkoutController (coms309.workout.CompletedWorkout)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CompletedWorkoutController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    15%
+  </span>
+  <span class="absValue">
+    (3/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    15%
+  </span>
+  <span class="absValue">
+    (3/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.CompletedWorkout;
+&nbsp;
+&nbsp;import coms309.workout.LiftSet.LiftSet;
+&nbsp;import coms309.workout.Lifts.Lift;
+&nbsp;import coms309.workout.Set.Set;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class CompletedWorkoutController {</b>
+&nbsp;    @Autowired
+&nbsp;    private CompletedWorkoutService completedWorkoutService;
+&nbsp;    @Autowired
+&nbsp;    private CompletedWorkoutRepository completedWorkoutRepository;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets all the Completed Workout Objects in the DB&quot;)
+&nbsp;    @GetMapping(&quot;/completedWorkout&quot;)
+&nbsp;    public List&lt;CompletedWorkout&gt; getAllCompletedWorkout() {
+<b class="fc">&nbsp;        return completedWorkoutService.getAllCompletedWorkouts();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets all the CompletedWorkout Objects tied to a given User&quot;)
+&nbsp;    @GetMapping(&quot;/completedWorkout/user/{username}&quot;)
+&nbsp;    public List&lt;CompletedWorkout&gt; getCompletedWorkoutsForUser(@PathVariable String username) {
+<b class="fc">&nbsp;        return completedWorkoutService.getCompletedWorkoutsForUser(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets the Completed Workout Object with the given ID&quot;)
+&nbsp;    @GetMapping(&quot;/completedWorkout/{id}&quot;)
+&nbsp;    public Map&lt;String, Object&gt; getCompletedWorkoutById(@PathVariable int id) {
+<b class="nc">&nbsp;        return completedWorkoutService.getCompletedWorkoutById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout with no lifts entered&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkout(@PathVariable String name, @RequestParam String username) {
+<b class="nc">&nbsp;        return completedWorkoutService.createEmptyCompletedWorkout(name, username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object based a Workout template - Primary Post&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/template/{name}/{workoutId}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutFromTemplate(@PathVariable int workoutId, @PathVariable String name, @RequestParam String username) {
+<b class="nc">&nbsp;        return completedWorkoutService.createCompletedWorkoutFromTemplate(workoutId, name, username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object based a Workout template - Primary Post&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}/workout/{workoutName}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutFromTemplateByName(@PathVariable String workoutName, @PathVariable String name, @RequestParam String username) {
+<b class="nc">&nbsp;        return completedWorkoutService.createCompletedWorkoutFromTemplateByName(workoutName, name, username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Change the name of the CompletedWorkout(by name)&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/changename/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; changeCompletedWorkoutNameByName(@PathVariable String name, @RequestParam String newName, @RequestParam String username) {
+<b class="nc">&nbsp;        return completedWorkoutService.changeCompletedWorkoutName(name, newName, username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Add a new LiftSet to CompletedWorkout by Lift title&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/{name}/liftset/{liftTitle}&quot;)
+&nbsp;    public Map&lt;String, String&gt; addLiftSetToCompletedWorkout(@PathVariable String name, @PathVariable String liftTitle, @RequestParam String username) {
+<b class="nc">&nbsp;        return completedWorkoutService.addLiftSetToCompletedWorkout(name, liftTitle, username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Add a new LiftSet to CompletedWorkout by Lift title&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/{name}/liftset/{liftTitle}/{date}&quot;)
+&nbsp;    public Map&lt;String, String&gt; addLiftSetToCompletedWorkout(@PathVariable String name, @PathVariable String liftTitle, @RequestParam String username, @PathVariable String date) {
+<b class="nc">&nbsp;        return completedWorkoutService.addLiftSetToCompletedWorkoutByDate(name, liftTitle, username, date);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Add Set to LiftSet(by title) in a CompletedWorkout(by name)&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/name/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; addSetToLiftSetInComWorkByName(@PathVariable String name, @RequestParam String LiftName, @RequestBody Set set, @RequestParam String username) {
+<b class="nc">&nbsp;        return completedWorkoutService.addSetToLiftSet(name, LiftName, set, username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a CompletedWorkout by Id&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/{id}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteCompletedWorkout(@PathVariable int id) {
+<b class="nc">&nbsp;        return completedWorkoutService.deleteCompletedWorkout(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a CompletedWorkout by name&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/name/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteCompletedWorkoutByName(@PathVariable String name) {
+<b class="nc">&nbsp;        return completedWorkoutService.deleteCompletedWorkoutByName(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a Set from LiftSet based on ComWork Name and Lift Name&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/name/{name}/{liftName}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteSetFromComWorkLiftSetByName(@PathVariable String name, @PathVariable String liftName, @RequestParam int setNum) {
+<b class="nc">&nbsp;        return completedWorkoutService.deleteSetFromLiftSet(name, liftName, setNum);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets the workouts that a user did on a certain date, date is in YYYY-MM-DD format&quot;)
+&nbsp;    @GetMapping(path=&quot;/calendar/{username}/{date}&quot;)
+&nbsp;    public Map&lt;String,Object&gt; getUsersWorkoutsforDate(@PathVariable String username, @PathVariable String date) {
+<b class="nc">&nbsp;        return completedWorkoutService.getUserWorkoutsForDate(username, date);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object based a Workout template with specific date&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}/workout/{workoutName}/{date}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutFromTemplateByNameWithDate(
+&nbsp;            @PathVariable String workoutName,
+&nbsp;            @PathVariable String name,
+&nbsp;            @RequestParam String username,
+&nbsp;            @PathVariable String date) {
+<b class="nc">&nbsp;        return completedWorkoutService.createCompletedWorkoutFromTemplateWithDate(workoutName, name, username, date);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object without a WorkoutTemplate with specific date&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}/{date}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutByNameWithDate(
+&nbsp;            @PathVariable String name,
+&nbsp;            @RequestParam String username,
+&nbsp;            @PathVariable String date) {
+<b class="nc">&nbsp;        return completedWorkoutService.createCompletedWorkoutWithoutTemplateWithDate(name, username, date);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(path=&quot;/completedworkout/test&quot;)
+&nbsp;    public List&lt;CompletedWorkout&gt; getCompletedWorkoutsinRange() {
+<b class="nc">&nbsp;        return completedWorkoutRepository.getCompletedWorkoutsByUserInRange(&quot;a&quot;, &quot;2024-12-01&quot;,&quot;2024-12-10&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(path=&quot;/completedworkout/lift/test&quot;)
+&nbsp;    public List&lt;LiftSet&gt; getLiftsinRange() {
+<b class="nc">&nbsp;        return completedWorkoutRepository.getLiftsByUserInRange(&quot;a&quot;, &quot;2024-12-01&quot;,&quot;2024-12-10&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(path=&quot;/completedworkout/muscleGroup/test&quot;)
+&nbsp;    public List&lt;String&gt; getMuscleGroupsInRange() {
+<b class="nc">&nbsp;        return completedWorkoutRepository.getLiftsByUserInTwoRangeByMuscleGroup(&quot;a&quot;, &quot;2024-12-01&quot;,&quot;2024-12-05&quot;, &quot;2024-12-04&quot;,&quot;2024-12-10&quot;, &quot;Chest&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 15:18</div>
+</div>
+</body>
+</html>

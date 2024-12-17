@@ -1,0 +1,550 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivityFriends</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivityFriends (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivityFriends</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/153)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ActivityFriends$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/34)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/160)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Build;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.text.Editable;
+&nbsp;import android.text.TextWatcher;
+&nbsp;import android.util.Log;
+&nbsp;import android.view.View;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.ImageButton;
+&nbsp;import android.widget.LinearLayout;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.RequestQueue;
+&nbsp;import com.android.volley.toolbox.JsonArrayRequest;
+&nbsp;import com.android.volley.toolbox.StringRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="nc">&nbsp;public class ActivityFriends extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private ImageButton backButton;
+&nbsp;    private EditText searchFriends;
+&nbsp;    private LinearLayout friendsListContainer;
+&nbsp;    private RequestQueue requestQueue;
+&nbsp;    private Button followingButton;
+&nbsp;    private Button followersButton;
+&nbsp;    private Button showFriendsButton;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the activity is created.
+&nbsp;     * Initializes views and sets up event listeners.
+&nbsp;     *
+&nbsp;     * @author Miles Nichols
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_friends);</b>
+&nbsp;
+<b class="nc">&nbsp;        backButton = findViewById(R.id.btn_back);</b>
+<b class="nc">&nbsp;        searchFriends = findViewById(R.id.search_friends);</b>
+<b class="nc">&nbsp;        friendsListContainer = findViewById(R.id.friends_list_container);</b>
+<b class="nc">&nbsp;        followingButton = findViewById(R.id.btn_following);</b>
+<b class="nc">&nbsp;        followersButton = findViewById(R.id.btn_followers);</b>
+<b class="nc">&nbsp;        showFriendsButton = findViewById(R.id.btn_showFriends);</b>
+&nbsp;
+<b class="nc">&nbsp;        String currentUsername = ActivityLogin.getUsername();</b>
+<b class="nc">&nbsp;        highlightButton(showFriendsButton);</b>
+<b class="nc">&nbsp;        requestQueue = Volley.newRequestQueue(this);</b>
+&nbsp;
+<b class="nc">&nbsp;        searchFriends.addTextChangedListener(new TextWatcher() {</b>
+&nbsp;            @Override
+&nbsp;            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void onTextChanged(CharSequence s, int start, int before, int count) {
+<b class="nc">&nbsp;                String query = s.toString().trim();</b>
+<b class="nc">&nbsp;                if (!query.isEmpty()) {</b>
+<b class="nc">&nbsp;                    searchUsers(query);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    friendsListContainer.removeAllViews();</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void afterTextChanged(Editable s) {
+<b class="nc">&nbsp;            }</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        showFriendsButton.setOnClickListener(view -&gt; {</b>
+<b class="nc">&nbsp;            fetchFriends(currentUsername);</b>
+<b class="nc">&nbsp;            highlightButton(showFriendsButton);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        followingButton.setOnClickListener(view -&gt; {</b>
+<b class="nc">&nbsp;            Log.d(&quot;FriendsActivity&quot;, &quot;Following button clicked&quot;);</b>
+<b class="nc">&nbsp;            fetchFollowing(currentUsername);</b>
+<b class="nc">&nbsp;            highlightButton(followingButton);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        followersButton.setOnClickListener(view -&gt; {</b>
+<b class="nc">&nbsp;            Log.d(&quot;FriendsActivity&quot;, &quot;Followers button clicked&quot;);</b>
+<b class="nc">&nbsp;            fetchFollowers(currentUsername);</b>
+<b class="nc">&nbsp;            highlightButton(followersButton);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        backButton.setOnClickListener(view -&gt; finish());</b>
+&nbsp;
+<b class="nc">&nbsp;        fetchFriends(currentUsername);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Highlights the active button.
+&nbsp;     *
+&nbsp;     * @param activeButton the button to highlight
+&nbsp;     */
+&nbsp;    private void highlightButton(Button activeButton) {
+<b class="nc">&nbsp;        if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) {</b>
+<b class="nc">&nbsp;            showFriendsButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));</b>
+<b class="nc">&nbsp;            followingButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));</b>
+<b class="nc">&nbsp;            followersButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));</b>
+<b class="nc">&nbsp;            activeButton.setBackgroundColor(getResources().getColor(R.color.highlight_color, null));</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            showFriendsButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));</b>
+<b class="nc">&nbsp;            followingButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));</b>
+<b class="nc">&nbsp;            followersButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));</b>
+<b class="nc">&nbsp;            activeButton.setBackgroundColor(getResources().getColor(R.color.highlight_color));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fetches the list of friends for the given username.
+&nbsp;     *
+&nbsp;     * @param username the username of the current user
+&nbsp;     */
+&nbsp;    private void fetchFriends(String username) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/friend/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    List&lt;ObjectUser&gt; friends = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; response.length(); i++) {</b>
+<b class="nc">&nbsp;                        JSONObject friendJson = response.optJSONObject(i);</b>
+<b class="nc">&nbsp;                        if (friendJson != null) {</b>
+<b class="nc">&nbsp;                            ObjectUser friend = new ObjectUser();</b>
+<b class="nc">&nbsp;                            friend.setUsername(friendJson.optString(&quot;username&quot;));</b>
+<b class="nc">&nbsp;                            friends.add(friend);</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                    displayFriends(friends);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Some error occurred :(&quot;, Toast.LENGTH_LONG).show();</b>
+&nbsp;                }
+&nbsp;        );
+<b class="nc">&nbsp;        requestQueue.add(jsonArrayRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the list of friends in the UI.
+&nbsp;     *
+&nbsp;     * @param friends the list of friends to display
+&nbsp;     */
+&nbsp;    private void displayFriends(List&lt;ObjectUser&gt; friends) {
+<b class="nc">&nbsp;        friendsListContainer.removeAllViews();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (ObjectUser friend : friends) {</b>
+<b class="nc">&nbsp;            View friendItem = getLayoutInflater().inflate(R.layout.item_friend, null);</b>
+<b class="nc">&nbsp;            TextView friendName = friendItem.findViewById(R.id.friend_name);</b>
+<b class="nc">&nbsp;            friendName.setText(friend.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton unfollowButton = friendItem.findViewById(R.id.btn_unfollow);</b>
+<b class="nc">&nbsp;            unfollowButton.setOnClickListener(view -&gt; unfollowFriend(friend.getUsername()));</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton followButton = friendItem.findViewById(R.id.btn_follow);</b>
+<b class="nc">&nbsp;            followButton.setVisibility(View.GONE);</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton messageButton = friendItem.findViewById(R.id.btn_message);</b>
+<b class="nc">&nbsp;            messageButton.setOnClickListener(view -&gt; {</b>
+<b class="nc">&nbsp;                Intent chatIntent = new Intent(ActivityFriends.this, ActivityChat.class);</b>
+<b class="nc">&nbsp;                chatIntent.putExtra(&quot;friend_username&quot;, friend.getUsername());</b>
+<b class="nc">&nbsp;                startActivity(chatIntent);</b>
+&nbsp;            });
+&nbsp;
+<b class="nc">&nbsp;            friendsListContainer.addView(friendItem);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Follows the specified user.
+&nbsp;     *
+&nbsp;     * @param followingUsername the username of the user to follow
+&nbsp;     */
+&nbsp;    private void followFriend(String followingUsername) {
+<b class="nc">&nbsp;        String currentUsername = ActivityLogin.getUsername();</b>
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/follow?follower_username=&quot; + currentUsername + &quot;&amp;following_username=&quot; + followingUsername;</b>
+&nbsp;
+<b class="nc">&nbsp;        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Followed &quot; + followingUsername, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                    fetchFollowing(currentUsername);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Failed to follow: &quot; + followingUsername, Toast.LENGTH_LONG).show();</b>
+&nbsp;                }
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(stringRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fetches the list of users that the current user is following.
+&nbsp;     *
+&nbsp;     * @param username the username of the current user
+&nbsp;     */
+&nbsp;    private void fetchFollowing(String username) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/following/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    List&lt;ObjectUser&gt; followingList = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; response.length(); i++) {</b>
+<b class="nc">&nbsp;                        JSONObject followingJson = response.optJSONObject(i);</b>
+<b class="nc">&nbsp;                        if (followingJson != null) {</b>
+<b class="nc">&nbsp;                            ObjectUser following = new ObjectUser();</b>
+<b class="nc">&nbsp;                            following.setUsername(followingJson.optString(&quot;username&quot;));</b>
+<b class="nc">&nbsp;                            followingList.add(following);</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                    displayFollowing(followingList);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Some error occurred :(&quot;, Toast.LENGTH_LONG).show();</b>
+&nbsp;                }
+&nbsp;        );
+<b class="nc">&nbsp;        requestQueue.add(jsonArrayRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the list of users that the current user is following.
+&nbsp;     *
+&nbsp;     * @param following the list of users to display
+&nbsp;     */
+&nbsp;    private void displayFollowing(List&lt;ObjectUser&gt; following) {
+<b class="nc">&nbsp;        friendsListContainer.removeAllViews();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (ObjectUser user : following) {</b>
+<b class="nc">&nbsp;            View userItem = getLayoutInflater().inflate(R.layout.item_friend, null);</b>
+<b class="nc">&nbsp;            TextView userName = userItem.findViewById(R.id.friend_name);</b>
+<b class="nc">&nbsp;            userName.setText(user.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton unfollowButton = userItem.findViewById(R.id.btn_unfollow);</b>
+<b class="nc">&nbsp;            unfollowButton.setOnClickListener(view -&gt; unfollowFriend(user.getUsername()));</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton followButton = userItem.findViewById(R.id.btn_follow);</b>
+<b class="nc">&nbsp;            followButton.setVisibility(View.GONE);</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton messageButton = userItem.findViewById(R.id.btn_message);</b>
+<b class="nc">&nbsp;            messageButton.setVisibility(View.GONE);</b>
+&nbsp;
+<b class="nc">&nbsp;            friendsListContainer.addView(userItem);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fetches the list of followers for the given username.
+&nbsp;     *
+&nbsp;     * @param username the username of the current user
+&nbsp;     */
+&nbsp;    private void fetchFollowers(String username) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/followers/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    List&lt;ObjectUser&gt; followersList = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; response.length(); i++) {</b>
+<b class="nc">&nbsp;                        JSONObject followerJson = response.optJSONObject(i);</b>
+<b class="nc">&nbsp;                        if (followerJson != null) {</b>
+<b class="nc">&nbsp;                            ObjectUser follower = new ObjectUser();</b>
+<b class="nc">&nbsp;                            follower.setUsername(followerJson.optString(&quot;username&quot;));</b>
+<b class="nc">&nbsp;                            followersList.add(follower);</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                    displayFollowers(followersList);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Some error occurred :(&quot;, Toast.LENGTH_LONG).show();</b>
+&nbsp;                }
+&nbsp;        );
+<b class="nc">&nbsp;        requestQueue.add(jsonArrayRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the list of followers in the UI.
+&nbsp;     *
+&nbsp;     * @param followers the list of followers to display
+&nbsp;     */
+&nbsp;    private void displayFollowers(List&lt;ObjectUser&gt; followers) {
+<b class="nc">&nbsp;        friendsListContainer.removeAllViews();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (ObjectUser user : followers) {</b>
+<b class="nc">&nbsp;            View userItem = getLayoutInflater().inflate(R.layout.item_friend, null);</b>
+<b class="nc">&nbsp;            TextView userName = userItem.findViewById(R.id.friend_name);</b>
+<b class="nc">&nbsp;            userName.setText(user.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton unfollowButton = userItem.findViewById(R.id.btn_unfollow);</b>
+<b class="nc">&nbsp;            unfollowButton.setOnClickListener(view -&gt; unfollowFriend(user.getUsername()));</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton followButton = userItem.findViewById(R.id.btn_follow);</b>
+<b class="nc">&nbsp;            followButton.setVisibility(View.VISIBLE);</b>
+<b class="nc">&nbsp;            followButton.setOnClickListener(view -&gt; followFriend(user.getUsername()));</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton messageButton = userItem.findViewById(R.id.btn_message);</b>
+<b class="nc">&nbsp;            messageButton.setVisibility(View.GONE);</b>
+&nbsp;
+<b class="nc">&nbsp;            friendsListContainer.addView(userItem);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Unfollows the specified user.
+&nbsp;     *
+&nbsp;     * @param username the username of the user to unfollow
+&nbsp;     */
+&nbsp;    private void unfollowFriend(String username) {
+<b class="nc">&nbsp;        String currentUsername = ActivityLogin.getUsername();</b>
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/unfollow?follower_username=&quot; + currentUsername + &quot;&amp;following_username=&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Unfollowed &quot; + username, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;                    fetchFollowing(currentUsername);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Failed to unfollow: &quot; + username, Toast.LENGTH_LONG).show();</b>
+&nbsp;                }
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(stringRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for users by a given query string.
+&nbsp;     *
+&nbsp;     * @param query the query string to search for
+&nbsp;     */
+&nbsp;    private void searchUsers(String query) {
+<b class="nc">&nbsp;        String url = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/search/&quot; + query;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    List&lt;ObjectUser&gt; users = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; response.length(); i++) {</b>
+<b class="nc">&nbsp;                        JSONObject userJson = response.optJSONObject(i);</b>
+<b class="nc">&nbsp;                        if (userJson != null) {</b>
+<b class="nc">&nbsp;                            ObjectUser user = new ObjectUser();</b>
+<b class="nc">&nbsp;                            user.setUsername(userJson.optString(&quot;username&quot;));</b>
+<b class="nc">&nbsp;                            users.add(user);</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                    displaySearchResults(users);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Toast.makeText(getApplicationContext(), &quot;Some error occurred :(&quot;, Toast.LENGTH_LONG).show();</b>
+&nbsp;                }
+&nbsp;        );
+<b class="nc">&nbsp;        requestQueue.add(jsonArrayRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the search results.
+&nbsp;     *
+&nbsp;     * @param users the list of users to display
+&nbsp;     */
+&nbsp;    private void displaySearchResults(List&lt;ObjectUser&gt; users) {
+<b class="nc">&nbsp;        friendsListContainer.removeAllViews();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (ObjectUser user : users) {</b>
+<b class="nc">&nbsp;            View userItem = getLayoutInflater().inflate(R.layout.item_friend, null);</b>
+<b class="nc">&nbsp;            TextView userName = userItem.findViewById(R.id.friend_name);</b>
+<b class="nc">&nbsp;            userName.setText(user.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton unfollowButton = userItem.findViewById(R.id.btn_unfollow);</b>
+<b class="nc">&nbsp;            unfollowButton.setVisibility(View.GONE);</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton followButton = userItem.findViewById(R.id.btn_follow);</b>
+<b class="nc">&nbsp;            followButton.setVisibility(View.VISIBLE);</b>
+<b class="nc">&nbsp;            followButton.setOnClickListener(view -&gt; followFriend(user.getUsername()));</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageButton messageButton = userItem.findViewById(R.id.btn_message);</b>
+<b class="nc">&nbsp;            messageButton.setOnClickListener(view -&gt; {</b>
+<b class="nc">&nbsp;                Intent chatIntent = new Intent(ActivityFriends.this, ActivityChat.class);</b>
+<b class="nc">&nbsp;                chatIntent.putExtra(&quot;friend_username&quot;, user.getUsername());</b>
+<b class="nc">&nbsp;                startActivity(chatIntent);</b>
+&nbsp;            });
+&nbsp;
+<b class="nc">&nbsp;            friendsListContainer.addView(userItem);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

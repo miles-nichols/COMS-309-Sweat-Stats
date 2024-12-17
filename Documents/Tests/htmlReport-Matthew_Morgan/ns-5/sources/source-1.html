@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LiftSet</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.LiftSet</a>
+</div>
+
+<h1>Coverage Summary for Class: LiftSet (coms309.workout.LiftSet)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LiftSet</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (2/12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">LiftSet$HibernateInstantiator$yROvjEys</td>
+  </tr>
+  <tr>
+    <td class="name">LiftSet$HibernateProxy$iu2GL9vu</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (2/12)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.LiftSet;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import coms309.workout.CompletedWorkout.CompletedWorkout;
+&nbsp;import coms309.workout.Lifts.Lift;
+&nbsp;import coms309.workout.Set.Set;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;lift_sets&quot;)
+&nbsp;public class LiftSet
+&nbsp;{
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private int id;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn
+&nbsp;    private Lift lift;
+&nbsp;
+<b class="fc">&nbsp;    @ElementCollection</b>
+&nbsp;    private List&lt;Set&gt; sets = new ArrayList&lt;&gt;();
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;completed_workout_id&quot;)
+&nbsp;    @JsonIgnore
+&nbsp;    private CompletedWorkout completedWorkout;
+&nbsp;
+<b class="fc">&nbsp;    public LiftSet() {}</b>
+&nbsp;
+&nbsp;    public LiftSet(Lift lift)
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        this.lift = lift;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public List&lt;Set&gt; getSets() { return sets; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setSets(List&lt;Set&gt; sets) { this.sets = sets; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public Lift getLift() { return lift; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setLift(Lift lift) { this.lift = lift; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public CompletedWorkout getCompletedWorkout() { return completedWorkout; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setCompletedWorkout(CompletedWorkout completedWorkout) { this.completedWorkout = completedWorkout; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void addSet(Set set) { this.sets.add(set); }</b>
+&nbsp;
+&nbsp;    public void addSetByData(int reps, double weight)
+&nbsp;    {
+<b class="nc">&nbsp;        this.sets.add(new Set(reps, weight));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-24 16:14</div>
+</div>
+</body>
+</html>

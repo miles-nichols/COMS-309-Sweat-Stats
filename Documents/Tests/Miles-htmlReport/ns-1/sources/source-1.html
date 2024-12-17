@@ -1,0 +1,286 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivityChat</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivityChat (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivityChat</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ActivityChat$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.ImageButton;
+&nbsp;import android.widget.LinearLayout;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import okhttp3.OkHttpClient;
+&nbsp;import okhttp3.Request;
+&nbsp;import okhttp3.WebSocket;
+&nbsp;import okhttp3.WebSocketListener;
+&nbsp;import okio.ByteString;
+&nbsp;
+&nbsp;/**
+&nbsp; * ActivityChat is an activity that enables real-time chat between users using WebSocket.
+&nbsp; * It allows users to send and receive messages in a chat interface.
+&nbsp; * @author Miles Nichols
+&nbsp; */
+<b class="nc">&nbsp;public class ActivityChat extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private WebSocket webSocket;
+&nbsp;    private EditText messageEditText;
+&nbsp;    private LinearLayout chatHistoryContainer;
+&nbsp;    private String currentUsername;
+&nbsp;    private String friendName;
+&nbsp;    private OkHttpClient client;
+&nbsp;    private static final String BASE_URL = &quot;ws://coms-3090-014.class.las.iastate.edu:8080/chat/&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the activity is first created.
+&nbsp;     * Initializes UI components, retrieves necessary data, and sets up WebSocket connection.
+&nbsp;     *
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+&nbsp;     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState().
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_chat);</b>
+&nbsp;
+<b class="nc">&nbsp;        currentUsername = ActivityLogin.getUsername();</b>
+<b class="nc">&nbsp;        friendName = getIntent().getStringExtra(&quot;friend_username&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        messageEditText = findViewById(R.id.messageEditText);</b>
+<b class="nc">&nbsp;        chatHistoryContainer = findViewById(R.id.chatHistoryContainer);</b>
+<b class="nc">&nbsp;        ImageButton sendButton = findViewById(R.id.sendButton);</b>
+<b class="nc">&nbsp;        client = new OkHttpClient();</b>
+<b class="nc">&nbsp;        initializeWebSocket();</b>
+&nbsp;
+<b class="nc">&nbsp;        sendButton.setOnClickListener(view -&gt; {</b>
+<b class="nc">&nbsp;            String message = messageEditText.getText().toString().trim();</b>
+<b class="nc">&nbsp;            if (!message.isEmpty()) {</b>
+<b class="nc">&nbsp;                sendMessage(&quot;@&quot; + friendName + &quot; &quot; + message);</b>
+<b class="nc">&nbsp;                messageEditText.setText(&quot;&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Please enter a message.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the WebSocket connection with the server using the current username.
+&nbsp;     */
+&nbsp;    private void initializeWebSocket() {
+<b class="nc">&nbsp;        String url = BASE_URL + currentUsername;</b>
+<b class="nc">&nbsp;        Request request = new Request.Builder().url(url).build();</b>
+&nbsp;
+<b class="nc">&nbsp;        webSocket = client.newWebSocket(request, new WebSocketListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+<b class="nc">&nbsp;                runOnUiThread(() -&gt; Toast.makeText(ActivityChat.this, &quot;Connected to server&quot;, Toast.LENGTH_SHORT).show());</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void onMessage(WebSocket webSocket, String text) {
+<b class="nc">&nbsp;                runOnUiThread(() -&gt; receiveMessage(text));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void onMessage(WebSocket webSocket, ByteString bytes) {
+<b class="nc">&nbsp;                runOnUiThread(() -&gt; receiveMessage(bytes.utf8()));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void onClosing(WebSocket webSocket, int code, String reason) {
+<b class="nc">&nbsp;                runOnUiThread(() -&gt; Toast.makeText(ActivityChat.this, &quot;Disconnected: &quot; + reason, Toast.LENGTH_SHORT).show());</b>
+<b class="nc">&nbsp;                webSocket.close(1000, null);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
+<b class="nc">&nbsp;                runOnUiThread(() -&gt; Toast.makeText(ActivityChat.this, &quot;WebSocket Error: &quot; + t.getMessage(), Toast.LENGTH_SHORT).show());</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends a message to the WebSocket server and updates the chat history in the UI.
+&nbsp;     *
+&nbsp;     * @param message The message to be sent to the server.
+&nbsp;     */
+&nbsp;    private void sendMessage(String message) {
+<b class="nc">&nbsp;        if (webSocket != null) {</b>
+<b class="nc">&nbsp;            webSocket.send(message);</b>
+<b class="nc">&nbsp;            TextView sentMessageView = new TextView(this);</b>
+<b class="nc">&nbsp;            sentMessageView.setText(&quot;You: &quot; + message);</b>
+<b class="nc">&nbsp;            chatHistoryContainer.addView(sentMessageView);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;WebSocket is not connected&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a received message in the chat history container.
+&nbsp;     *
+&nbsp;     * @param message The message received from the WebSocket server.
+&nbsp;     */
+&nbsp;    private void receiveMessage(String message) {
+<b class="nc">&nbsp;        TextView messageView = new TextView(this);</b>
+<b class="nc">&nbsp;        messageView.setText(&quot;Friend: &quot; + message);</b>
+<b class="nc">&nbsp;        chatHistoryContainer.addView(messageView);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Closes the WebSocket connection when the activity is destroyed.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onDestroy() {
+<b class="nc">&nbsp;        super.onDestroy();</b>
+<b class="nc">&nbsp;        if (webSocket != null) {</b>
+<b class="nc">&nbsp;            webSocket.close(1000, &quot;Activity destroyed&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Lift Name -->
+    <TextView
+        android:id="@+id/lift_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lift Name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Lift Sets (Reps and Weight) -->
+    <TextView
+        android:id="@+id/lift_sets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sets details"
+        android:textSize="14sp" />
+</LinearLayout>

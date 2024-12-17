@@ -1,0 +1,279 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivityCreateUpdateLift</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivityCreateUpdateLift (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivityCreateUpdateLift</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/56)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Toast;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.RequestQueue;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity that allows the user to create or update a lift in the fitness tracker app.
+&nbsp; * This activity provides functionality for checking if a lift exists, creating a new lift,
+&nbsp; * and updating an existing lift. The lift&#39;s details are submitted via POST and PUT requests.
+&nbsp; *
+&nbsp; * @author Miles Nichols
+&nbsp; */
+<b class="nc">&nbsp;public class ActivityCreateUpdateLift extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private EditText titleEditText;
+&nbsp;    private EditText typeEditText;
+&nbsp;    private EditText levelEditText;
+&nbsp;    private EditText descriptionEditText;
+&nbsp;    private EditText muscleGroupEditText;
+&nbsp;    private EditText equipmentEditText;
+&nbsp;    private Button createButton;
+&nbsp;    private Button updateButton;
+&nbsp;    private RequestQueue requestQueue;
+&nbsp;    private boolean isUpdate;
+&nbsp;    private String liftTitle;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the activity is created. Initializes the UI elements, checks if a lift
+&nbsp;     * is being created or updated, and sets the appropriate button functionality.
+&nbsp;     *
+&nbsp;     * @param savedInstanceState The saved instance state of the activity.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_create_update_lift);</b>
+&nbsp;
+<b class="nc">&nbsp;        titleEditText = findViewById(R.id.editTextTitle);</b>
+<b class="nc">&nbsp;        typeEditText = findViewById(R.id.editTextType);</b>
+<b class="nc">&nbsp;        levelEditText = findViewById(R.id.editTextLevel);</b>
+<b class="nc">&nbsp;        descriptionEditText = findViewById(R.id.editTextDescription);</b>
+<b class="nc">&nbsp;        muscleGroupEditText = findViewById(R.id.editTextMuscleGroup);</b>
+<b class="nc">&nbsp;        equipmentEditText = findViewById(R.id.editTextEquipment);</b>
+<b class="nc">&nbsp;        createButton = findViewById(R.id.buttonCreateLift);</b>
+<b class="nc">&nbsp;        updateButton = findViewById(R.id.buttonUpdateLift);</b>
+<b class="nc">&nbsp;        requestQueue = Volley.newRequestQueue(this);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (getIntent().getExtras() != null) {</b>
+<b class="nc">&nbsp;            liftTitle = getIntent().getStringExtra(&quot;liftTitle&quot;);</b>
+<b class="nc">&nbsp;            checkLiftExists(liftTitle);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            isUpdate = false;</b>
+<b class="nc">&nbsp;            updateButton.setEnabled(false);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        createButton.setOnClickListener(view -&gt; createLift());</b>
+<b class="nc">&nbsp;        updateButton.setOnClickListener(view -&gt; updateLift());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if a lift with the given title exists in the backend.
+&nbsp;     * If the lift exists, the activity switches to update mode and populates the fields.
+&nbsp;     *
+&nbsp;     * @param title The title of the lift to check for existence.
+&nbsp;     */
+&nbsp;    private void checkLiftExists(String title) {
+<b class="nc">&nbsp;        String backendUrl = &quot;http://coms-3090-014.class.las.iastate.edu:8080/lift/title/&quot; + title;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest jsonRequest = new JsonObjectRequest(</b>
+&nbsp;                Request.Method.GET, backendUrl, null,
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    isUpdate = true;</b>
+<b class="nc">&nbsp;                    populateFields(title);</b>
+<b class="nc">&nbsp;                    createButton.setEnabled(false);</b>
+<b class="nc">&nbsp;                    updateButton.setEnabled(true);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Log.e(&quot;CreateUpdateLift&quot;, &quot;Lift check error: &quot; + error.toString());</b>
+<b class="nc">&nbsp;                    isUpdate = false;</b>
+<b class="nc">&nbsp;                    createButton.setEnabled(true);</b>
+<b class="nc">&nbsp;                    updateButton.setEnabled(false);</b>
+&nbsp;                });
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(jsonRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Populates the form fields with the lift&#39;s existing data.
+&nbsp;     * Currently only sets the title, but this can be extended to set other fields.
+&nbsp;     *
+&nbsp;     * @param title The title of the lift to populate in the form.
+&nbsp;     */
+&nbsp;    private void populateFields(String title) {
+<b class="nc">&nbsp;        titleEditText.setText(title);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new lift by sending a POST request with the data entered by the user.
+&nbsp;     * The data is serialized into a JSON object and sent to the backend to create the lift.
+&nbsp;     */
+&nbsp;    private void createLift() {
+<b class="nc">&nbsp;        String backendUrl = &quot;http://coms-3090-014.class.las.iastate.edu:8080/lift&quot;;</b>
+<b class="nc">&nbsp;        JSONObject liftData = createLiftJson();</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest jsonRequest = new JsonObjectRequest(</b>
+&nbsp;                Request.Method.POST, backendUrl, liftData,
+<b class="nc">&nbsp;                response -&gt; Toast.makeText(ActivityCreateUpdateLift.this, &quot;Lift created successfully!&quot;, Toast.LENGTH_SHORT).show(),</b>
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    error.printStackTrace();</b>
+<b class="nc">&nbsp;                    Toast.makeText(ActivityCreateUpdateLift.this, &quot;Error creating lift&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(jsonRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates an existing lift by sending a PUT request with the updated data.
+&nbsp;     * The data is serialized into a JSON object and sent to the backend to update the lift.
+&nbsp;     */
+&nbsp;    private void updateLift() {
+<b class="nc">&nbsp;        String backendUrl = &quot;http://coms-3090-014.class.las.iastate.edu:8080/lift/title/&quot; + liftTitle;</b>
+<b class="nc">&nbsp;        JSONObject liftData = createLiftJson();</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest jsonRequest = new JsonObjectRequest(</b>
+&nbsp;                Request.Method.PUT, backendUrl, liftData,
+<b class="nc">&nbsp;                response -&gt; Toast.makeText(ActivityCreateUpdateLift.this, &quot;Lift updated successfully!&quot;, Toast.LENGTH_SHORT).show(),</b>
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    error.printStackTrace();</b>
+<b class="nc">&nbsp;                    Toast.makeText(ActivityCreateUpdateLift.this, &quot;Error updating lift&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(jsonRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a JSON object containing the lift data entered by the user.
+&nbsp;     *
+&nbsp;     * @return The JSON object representing the lift data.
+&nbsp;     */
+&nbsp;    private JSONObject createLiftJson() {
+<b class="nc">&nbsp;        JSONObject liftData = new JSONObject();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            liftData.put(&quot;title&quot;, titleEditText.getText().toString().trim());</b>
+<b class="nc">&nbsp;            liftData.put(&quot;type&quot;, typeEditText.getText().toString().trim());</b>
+<b class="nc">&nbsp;            liftData.put(&quot;level&quot;, levelEditText.getText().toString().trim());</b>
+<b class="nc">&nbsp;            liftData.put(&quot;description&quot;, descriptionEditText.getText().toString().trim());</b>
+<b class="nc">&nbsp;            liftData.put(&quot;muscleGroup&quot;, muscleGroupEditText.getText().toString().trim());</b>
+<b class="nc">&nbsp;            liftData.put(&quot;equipment&quot;, equipmentEditText.getText().toString().trim());</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;Error creating JSON object&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return liftData;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

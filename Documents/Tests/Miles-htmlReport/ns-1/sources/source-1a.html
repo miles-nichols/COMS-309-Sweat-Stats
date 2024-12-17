@@ -1,0 +1,177 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AddLiftDialog</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: AddLiftDialog (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AddLiftDialog</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AddLiftDialog$AddLiftCallback</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.app.AlertDialog;
+&nbsp;import android.content.Context;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.LinearLayout;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;public class AddLiftDialog {
+&nbsp;    public interface AddLiftCallback {
+&nbsp;        void onLiftEntered(String liftName);
+&nbsp;    }
+&nbsp;
+&nbsp;    private Context context;
+&nbsp;    private AddLiftCallback callback;
+&nbsp;
+<b class="nc">&nbsp;    public AddLiftDialog(Context context, AddLiftCallback callback) {</b>
+<b class="nc">&nbsp;        this.context = context;</b>
+<b class="nc">&nbsp;        this.callback = callback;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void show() {
+<b class="nc">&nbsp;        LinearLayout layout = new LinearLayout(context);</b>
+<b class="nc">&nbsp;        layout.setPadding(50, 40, 50, 10);</b>
+<b class="nc">&nbsp;        EditText et = new EditText(context);</b>
+<b class="nc">&nbsp;        et.setHint(&quot;Enter lift name&quot;);</b>
+<b class="nc">&nbsp;        layout.addView(et);</b>
+&nbsp;
+<b class="nc">&nbsp;        AlertDialog.Builder builder = new AlertDialog.Builder(context);</b>
+<b class="nc">&nbsp;        builder.setTitle(&quot;Add Lift&quot;);</b>
+<b class="nc">&nbsp;        builder.setView(layout);</b>
+<b class="nc">&nbsp;        builder.setPositiveButton(&quot;Add&quot;, (dialog, which) -&gt; {</b>
+<b class="nc">&nbsp;            String liftName = et.getText().toString().trim();</b>
+<b class="nc">&nbsp;            if (liftName.isEmpty()) {</b>
+<b class="nc">&nbsp;                Toast.makeText(context, &quot;Lift name cannot be empty.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                callback.onLiftEntered(liftName);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        builder.setNegativeButton(&quot;Cancel&quot;, (dialog, which) -&gt; dialog.dismiss());</b>
+<b class="nc">&nbsp;        builder.create().show();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

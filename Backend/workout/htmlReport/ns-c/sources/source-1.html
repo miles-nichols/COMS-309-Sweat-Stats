@@ -1,0 +1,308 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > User</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.Users</a>
+</div>
+
+<h1>Coverage Summary for Class: User (coms309.workout.Users)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">User</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.4%
+  </span>
+  <span class="absValue">
+    (19/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87%
+  </span>
+  <span class="absValue">
+    (40/46)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">User$HibernateInstantiator$EnVW0KZZ</td>
+  </tr>
+  <tr>
+    <td class="name">User$HibernateProxy$EE9m5X6e</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    86.4%
+  </span>
+  <span class="absValue">
+    (19/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87%
+  </span>
+  <span class="absValue">
+    (40/46)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.Users;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+&nbsp;import com.fasterxml.jackson.annotation.JsonProperty;
+&nbsp;import coms309.workout.CompletedWorkout.CompletedWorkout;
+&nbsp;import coms309.workout.Role.Role;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import coms309.workout.Profile.Profile;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;
+&nbsp;import jakarta.persistence.Column;
+&nbsp;import jakarta.persistence.Entity;
+&nbsp;import jakarta.persistence.Id;
+&nbsp;import jakarta.persistence.ManyToMany;
+&nbsp;import jakarta.persistence.OneToMany;
+&nbsp;import jakarta.persistence.Table;
+&nbsp;
+&nbsp;import org.antlr.v4.runtime.misc.NotNull;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;users&quot;)
+&nbsp;public class User
+&nbsp;{
+&nbsp;    //name that the user signs in with
+&nbsp;    @Id
+&nbsp;    private String username;
+&nbsp;
+&nbsp;    //password that the user signs in with
+&nbsp;    @NotNull
+&nbsp;    @Column
+&nbsp;    private String password;
+&nbsp;
+&nbsp;    //email that the user signs up with
+&nbsp;    @NotNull
+&nbsp;    @Column
+&nbsp;    private String email;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})</b>
+&nbsp;    @JoinTable(name=&quot;friends_with&quot;,
+&nbsp;            joinColumns={@JoinColumn(name=&quot;user_username&quot;, referencedColumnName = &quot;username&quot;)},
+&nbsp;            inverseJoinColumns={@JoinColumn(name=&quot;friend_username&quot;, referencedColumnName = &quot;username&quot;)})
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;User&gt; friends = new HashSet&lt;User&gt;();
+&nbsp;
+<b class="fc">&nbsp;    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE })</b>
+&nbsp;    @JoinTable(name=&quot;followers&quot;,
+&nbsp;            joinColumns={@JoinColumn(name=&quot;following_username&quot;)},
+&nbsp;            inverseJoinColumns={@JoinColumn(name=&quot;follower_username&quot;)})
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;User&gt; followers = new HashSet&lt;User&gt;();
+&nbsp;
+<b class="fc">&nbsp;    @ManyToMany(mappedBy = &quot;followers&quot;, cascade = {CascadeType.PERSIST, CascadeType.MERGE})</b>
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;User&gt; following = new HashSet&lt;&gt;();
+&nbsp;
+&nbsp;    @OneToOne(mappedBy= &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+&nbsp;    private Profile profile;
+&nbsp;
+<b class="fc">&nbsp;    @JsonIgnore</b>
+&nbsp;    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL)
+&nbsp;    private List&lt;CompletedWorkout&gt; completedWorkouts = new ArrayList&lt;&gt;();
+&nbsp;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Role role;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private int strikes;
+&nbsp;
+&nbsp;    public User(String username, String password, String email)
+<b class="fc">&nbsp;    {</b>
+<b class="fc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+<b class="fc">&nbsp;        this.email = email;</b>
+<b class="fc">&nbsp;        this.profile = new Profile();</b>
+<b class="fc">&nbsp;        this.role = Role.USER;</b>
+<b class="fc">&nbsp;        this.strikes = 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //No arg constructor not to be used.
+<b class="fc">&nbsp;    public User() {</b>
+&nbsp;    }
+&nbsp;//    @JsonProperty(&quot;username&quot;) // This ensures only the username is serialized
+<b class="fc">&nbsp;    public String getUsername() {return username;}</b>
+&nbsp;//    @JsonIgnoreProperties({&quot;password&quot;, &quot;email&quot;, &quot;friends&quot;, &quot;following&quot;, &quot;followers&quot;, &quot;profile&quot;, &quot;completedWorkouts&quot;})
+<b class="fc">&nbsp;    public void setUsername(String username) {this.username = username;}</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getPassword() {return password;}</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setPassword(String password) {this.password = password;}</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getEmail() {return email;}</b>
+&nbsp;
+<b class="fc">&nbsp;    public void setEmail(String email) {this.email = email;}</b>
+&nbsp;
+&nbsp;    public Set&lt;User&gt; getFriends() {
+<b class="fc">&nbsp;        return this.friends;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;User&gt; getFollowers() {
+<b class="fc">&nbsp;        return this.followers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;User&gt; getFollowing() {
+<b class="fc">&nbsp;        return this.following;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public Role getRole() { return this.role; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public int getStrikes() { return this.strikes; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setStrikes(int temp ) { this.strikes = temp; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public void setRole(Role temp) { this.role = temp; }</b>
+&nbsp;
+&nbsp;    public boolean isFriend(User other_user){
+<b class="fc">&nbsp;        Set&lt;User&gt; user1_followers = this.getFollowers();</b>
+<b class="fc">&nbsp;        Set&lt;User&gt; user2_followers = other_user.getFollowers();</b>
+<b class="pc">&nbsp;        return (user1_followers.contains(other_user) &amp;&amp; user2_followers.contains(this));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isFollowing(User other_user){
+<b class="fc">&nbsp;        return (other_user.getFollowers().contains(this));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Profile getProfile() {
+<b class="fc">&nbsp;        return profile;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setProfile(Profile profile) {
+<b class="fc">&nbsp;        this.profile = profile;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setProfileandUser(Profile profile) {
+<b class="fc">&nbsp;        this.profile = profile;</b>
+<b class="pc">&nbsp;        if(profile!=null){</b>
+<b class="fc">&nbsp;            profile.setUser(this);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;CompletedWorkout&gt; getCompletedWorkouts() {
+&nbsp;        try {
+<b class="pc">&nbsp;            if (this.completedWorkouts == null) {</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                completedWorkouts.sort(Comparator.comparing(CompletedWorkout::getDate));</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return completedWorkouts;</b>
+<b class="nc">&nbsp;        }catch(Exception e){</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;CompletedWorkout&gt; getCompletedWorkoutsBetweenDates(LocalDate from, LocalDate to) {
+<b class="fc">&nbsp;        List&lt;CompletedWorkout&gt; completedWorkouts = this.getCompletedWorkouts();</b>
+<b class="fc">&nbsp;        List&lt;CompletedWorkout&gt; toreturn = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for(int i = 0; i&lt;completedWorkouts.size(); i++) {</b>
+<b class="fc">&nbsp;            if(from.isBefore(completedWorkouts.get(i).getDate())&amp;&amp;to.isAfter(completedWorkouts.get(i).getDate())) {</b>
+<b class="fc">&nbsp;                toreturn.add(completedWorkouts.get(i));</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return toreturn;</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 15:18</div>
+</div>
+</body>
+</html>

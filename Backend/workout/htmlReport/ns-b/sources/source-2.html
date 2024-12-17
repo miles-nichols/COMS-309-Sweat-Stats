@@ -1,0 +1,175 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TrainingCommunityController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.TrainingCommunity</a>
+</div>
+
+<h1>Coverage Summary for Class: TrainingCommunityController (coms309.workout.TrainingCommunity)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TrainingCommunityController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12.5%
+  </span>
+  <span class="absValue">
+    (1/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.TrainingCommunity;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+&nbsp;public class TrainingCommunityController
+&nbsp;{
+&nbsp;
+&nbsp;
+&nbsp;    private final TrainingCommunityRepository trainingCommunityRepository;
+&nbsp;    private final TrainingCommunityService trainingCommunityService;
+&nbsp;
+<b class="fc">&nbsp;    public TrainingCommunityController(TrainingCommunityRepository trainingCommunityRepository, TrainingCommunityService trainingCommunityService) {</b>
+<b class="fc">&nbsp;        this.trainingCommunityRepository = trainingCommunityRepository;</b>
+<b class="fc">&nbsp;        this.trainingCommunityService = trainingCommunityService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Get all Training Communities&quot;)
+&nbsp;    @GetMapping(&quot;/trainingCommunity&quot;)
+&nbsp;    public List&lt;TrainingCommunity&gt; getAllTrainingCommunity()
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Get Training Communities by Trainer&quot;)
+&nbsp;    @GetMapping(&quot;/trainingCommunity/trainer/{trainerUsername}&quot;)
+&nbsp;    public List&lt;TrainingCommunity&gt; getCommunitiesByTrainer(@PathVariable String trainerUsername)
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityService.getCommunitiesByTrainer(trainerUsername);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Get Training Communities by Title&quot;)
+&nbsp;    @GetMapping(&quot;/trainingCommunity/{communityTitle}&quot;)
+&nbsp;    public List&lt;TrainingCommunity&gt; getCommunitiesByTitle(@PathVariable String communityTitle)
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityService.getCommunitiesByTitle(communityTitle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Create Training Community&quot;)
+&nbsp;    @PostMapping(&quot;/trainingCommunity&quot;)
+&nbsp;    public Map&lt;String, String&gt; createCommunity(@RequestParam String trainerUsername, @RequestParam String communityTitle, @RequestParam String description)
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityService.createCommunity(trainerUsername, communityTitle, description);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Join a Training Community&quot;)
+&nbsp;    @PutMapping(&quot;/trainingCommunity/{username}&quot;)
+&nbsp;    public Map&lt;String, String&gt; joinCommunity(@PathVariable String username, @RequestParam String trainerUsername, @RequestParam String communityTitle)
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityService.joinCommunity(username, trainerUsername, communityTitle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Leave a Training Community&quot;)
+&nbsp;    @DeleteMapping(&quot;/trainingCommunity/{username}&quot;)
+&nbsp;    public Map&lt;String, String&gt; leaveCommunity(@PathVariable String username, @RequestParam String trainerUsername, @RequestParam String communityTitle)
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityService.leaveCommunity(username, trainerUsername, communityTitle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Assign Workouts to Users in the Community&quot;)
+&nbsp;    @PostMapping(&quot;/trainingCommunity/workout/assign&quot;)
+&nbsp;    public Map&lt;String, String&gt; assignWorkouts(@RequestParam String trainerUsername, @RequestParam String communityTitle, @RequestParam String workoutTitle)
+&nbsp;    {
+<b class="nc">&nbsp;        return trainingCommunityService.setAssignedWorkout(trainerUsername, communityTitle, workoutTitle);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 15:18</div>
+</div>
+</body>
+</html>

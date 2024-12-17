@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/background_light">
+
+    <!-- Community Title -->
+    <TextView
+        android:id="@+id/tvCommunityTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Community Title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Recommended Lift Section -->
+    <TextView
+        android:id="@+id/tvRecommendedLift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recommended Workout: None"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Action Button -->
+    <Button
+        android:id="@+id/btnAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recommend Workout"
+        android:layout_gravity="center" />
+</LinearLayout>

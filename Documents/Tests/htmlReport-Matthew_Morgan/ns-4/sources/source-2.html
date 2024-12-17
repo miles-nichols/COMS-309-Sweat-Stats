@@ -1,0 +1,537 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CompletedWorkoutController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.CompletedWorkout</a>
+</div>
+
+<h1>Coverage Summary for Class: CompletedWorkoutController (coms309.workout.CompletedWorkout)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CompletedWorkoutController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.2%
+  </span>
+  <span class="absValue">
+    (1/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/68)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0.5%
+  </span>
+  <span class="absValue">
+    (1/206)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.CompletedWorkout;
+&nbsp;
+&nbsp;import coms309.workout.LiftSet.LiftSet;
+&nbsp;import coms309.workout.Lifts.Lift;
+&nbsp;import coms309.workout.Lifts.LiftRepository;
+&nbsp;import coms309.workout.Users.User;
+&nbsp;import coms309.workout.Users.UserRepository;
+&nbsp;import coms309.workout.Workout.Workout;
+&nbsp;import coms309.workout.Workout.WorkoutRepository;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class CompletedWorkoutController</b>
+&nbsp;{
+&nbsp;    @Autowired
+&nbsp;    private CompletedWorkoutRepository completedWorkoutRepository;
+&nbsp;    @Autowired
+&nbsp;    private WorkoutRepository workoutRepository;
+&nbsp;    @Autowired
+&nbsp;    private UserRepository userRepository;
+&nbsp;    @Autowired
+&nbsp;    private LiftRepository liftRepository;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets all the Completed Workout Objects in the DB&quot;)
+&nbsp;    @GetMapping(&quot;/completedWorkout&quot;)
+&nbsp;    public List&lt;CompletedWorkout&gt; getAllCompletedWorkout()
+&nbsp;    {
+<b class="nc">&nbsp;        return completedWorkoutRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets all the CompletedWorkout Objects tied to a given User&quot;)
+&nbsp;    @GetMapping(&quot;/completedWorkout/user/{username}&quot;)
+&nbsp;    public List&lt;CompletedWorkout&gt; getCompletedWorkoutsForUser(@PathVariable String username)
+&nbsp;    {
+<b class="nc">&nbsp;        return completedWorkoutRepository.findByUserUsernameOrderByDateAsc(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets the Completed Workout Object with the given ID&quot;)
+&nbsp;    @GetMapping(&quot;/completedWorkout/{id}&quot;)
+&nbsp;    public Map&lt;String, Object&gt; getCompletedWorkoutById(@PathVariable int id)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findById(id);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            response.put(&quot;completedWorkout&quot;, completedWorkout);</b>
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;200&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with id: &quot; + id);</b>
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout with no lifts entered&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkout(@PathVariable String name, @RequestParam String username)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+<b class="nc">&nbsp;        if (user != null) {</b>
+<b class="nc">&nbsp;            if (completedWorkout == null) {</b>
+<b class="nc">&nbsp;                completedWorkout = new CompletedWorkout(name, user);</b>
+<b class="nc">&nbsp;                user.getCompletedWorkouts().add(completedWorkout);</b>
+<b class="nc">&nbsp;                userRepository.save(user);</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;Empty CompletedWorkout created&quot;);</b>
+&nbsp;
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;CompletedWorkout already exists with name: &quot; + name);</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;User not found with username: &quot; + username);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object based a Workout template - Primary Post&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}/{workoutId}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutFromTemplate(@PathVariable int workoutId, @PathVariable String name, @RequestParam String username)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        Workout workout = workoutRepository.findById(workoutId);</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (workout != null &amp;&amp; user != null) {</b>
+<b class="nc">&nbsp;            if (completedWorkout == null) {</b>
+<b class="nc">&nbsp;                completedWorkout = new CompletedWorkout(name, user);</b>
+<b class="nc">&nbsp;                Set&lt;Lift&gt; lifts = workout.getLifts();</b>
+&nbsp;
+<b class="nc">&nbsp;                for(Lift lift : lifts)</b>
+&nbsp;                {
+<b class="nc">&nbsp;                    Lift temp = liftRepository.findByTitle(lift.getTitle());</b>
+<b class="nc">&nbsp;                    LiftSet liftSet = new LiftSet(temp);</b>
+<b class="nc">&nbsp;                    liftSet.setCompletedWorkout(completedWorkout);</b>
+<b class="nc">&nbsp;                    completedWorkout.getCompletedSets().add(liftSet);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                user.getCompletedWorkouts().add(completedWorkout);</b>
+<b class="nc">&nbsp;                userRepository.save(user);</b>
+&nbsp;
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;New CompletedWorkout created successfully&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;CompletedWorkout already exists with name: &quot; + name);</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (workout == null) {</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;Workout not found with id: &quot; + workoutId);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;User not found with username: &quot; + username);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object based a Workout template - Primary Post&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}/workout/{workoutName}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutFromTemplateByName(@PathVariable String workoutName, @PathVariable String name, @RequestParam String username)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        Workout workout = workoutRepository.findByName(workoutName);</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (workout != null &amp;&amp; user != null) {</b>
+<b class="nc">&nbsp;            if (completedWorkout == null) {</b>
+<b class="nc">&nbsp;                completedWorkout = new CompletedWorkout(name, user);</b>
+<b class="nc">&nbsp;                Set&lt;Lift&gt; lifts = workout.getLifts();</b>
+&nbsp;
+<b class="nc">&nbsp;                for(Lift lift : lifts)</b>
+&nbsp;                {
+<b class="nc">&nbsp;                    Lift temp = liftRepository.findByTitle(lift.getTitle());</b>
+<b class="nc">&nbsp;                    LiftSet liftSet = new LiftSet(temp);</b>
+<b class="nc">&nbsp;                    liftSet.setCompletedWorkout(completedWorkout);</b>
+<b class="nc">&nbsp;                    completedWorkout.getCompletedSets().add(liftSet);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                user.getCompletedWorkouts().add(completedWorkout);</b>
+<b class="nc">&nbsp;                userRepository.save(user);</b>
+&nbsp;
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;New CompletedWorkout created successfully&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;CompletedWorkout already exists with name: &quot; + name);</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (workout == null) {</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;Workout not found with name: &quot; + workoutName);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;User not found with username: &quot; + username);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    @Operation(summary = &quot;Change the name of the CompletedWorkout(by ID)&quot;)
+&nbsp;//    @PutMapping(&quot;/completedWorkout/changename/{id}&quot;)
+&nbsp;//    public Map&lt;String, String&gt; changeCompletedWorkoutName(@PathVariable int id, @RequestParam String newName)
+&nbsp;//    {
+&nbsp;//        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();
+&nbsp;//        CompletedWorkout completedWorkout = completedWorkoutRepository.findById(id);
+&nbsp;//        if (completedWorkout != null) {
+&nbsp;//            completedWorkout.setName(newName);
+&nbsp;//            User user = completedWorkout.getUser();
+&nbsp;//            userRepository.save(user);
+&nbsp;//            response.put(&quot;status&quot;, &quot;200&quot;);
+&nbsp;//            response.put(&quot;message&quot;, &quot;CompletedWorkout updated successfully&quot;);
+&nbsp;//        } else {
+&nbsp;//            response.put(&quot;status&quot;, &quot;404&quot;);
+&nbsp;//            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with id: &quot; + id);
+&nbsp;//        }
+&nbsp;//        return response;
+&nbsp;//    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Change the name of the CompletedWorkout(by name)&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/changename/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; changeCompletedWorkoutNameByName(@PathVariable String name, @RequestParam String newName)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            completedWorkout.setName(newName);</b>
+<b class="nc">&nbsp;            User user = completedWorkout.getUser();</b>
+<b class="nc">&nbsp;            userRepository.save(user);</b>
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout updated successfully&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with name: &quot; + name);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Add a new LiftSet to CompletedWorkout by Lift title&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/{name}/liftset/{liftTitle}&quot;)
+&nbsp;    public Map&lt;String, String&gt; addLiftSetToCompletedWorkout(@PathVariable String name, @PathVariable String liftTitle)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        Lift lift = liftRepository.findByTitle(liftTitle);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            if (lift != null) {</b>
+<b class="nc">&nbsp;                LiftSet liftSet = new LiftSet(lift);</b>
+<b class="nc">&nbsp;                liftSet.setCompletedWorkout(completedWorkout);</b>
+<b class="nc">&nbsp;                completedWorkout.getCompletedSets().add(liftSet);</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;LiftSet added successfully&quot;);</b>
+<b class="nc">&nbsp;                User user = completedWorkout.getUser();</b>
+<b class="nc">&nbsp;                userRepository.save(user);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;Lift not found with title: &quot; + liftTitle);</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with name: &quot; + name);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Add Set to LiftSet(by title) in a CompletedWorkout(by name)&quot;)
+&nbsp;    @PutMapping(&quot;/completedWorkout/name/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; addSetToLiftSetInComWorkByName(@PathVariable String name, @RequestParam String LiftName, @RequestBody coms309.workout.Set.Set set)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            for (LiftSet liftSet : completedWorkout.getCompletedSets()) {</b>
+<b class="nc">&nbsp;                if (liftSet.getLift().getTitle().equals(LiftName)) {</b>
+<b class="nc">&nbsp;                    liftSet.addSet(set);</b>
+<b class="nc">&nbsp;                    User user = completedWorkout.getUser();</b>
+<b class="nc">&nbsp;                    userRepository.save(user);</b>
+<b class="nc">&nbsp;                    response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                    response.put(&quot;message&quot;, &quot;Set added to &quot; + LiftName + &quot; successfully&quot;);</b>
+&nbsp;                    break;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                    response.put(&quot;message&quot;, &quot;LiftSet not found with title: &quot; + LiftName);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with id: &quot; + name);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a CompletedWorkout by Id&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/{id}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteCompletedWorkout(@PathVariable int id)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findById(id);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            completedWorkoutRepository.delete(completedWorkout);</b>
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;Completed Workout deleted successfully&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with id: &quot; + id);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a CompletedWorkout by name&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/name/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteCompletedWorkoutByName(@PathVariable String name)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            completedWorkoutRepository.delete(completedWorkout);</b>
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;Completed Workout deleted successfully&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with name: &quot; + name);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a Set from LiftSet based on ComWork ID and Lift Name&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/{id}/{name}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteSetFromComWorkLiftSet(@PathVariable int id, @PathVariable String name, @RequestParam int setNum)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findById(id);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            for (LiftSet liftSet : completedWorkout.getCompletedSets()) {</b>
+<b class="nc">&nbsp;                if (liftSet.getLift().getTitle().equals(name)) {</b>
+<b class="nc">&nbsp;                    liftSet.getSets().remove(setNum - 1);</b>
+<b class="nc">&nbsp;                    completedWorkoutRepository.save(completedWorkout);</b>
+<b class="nc">&nbsp;                    response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                    response.put(&quot;message&quot;, &quot;Set deleted from LiftSet successfully&quot;);</b>
+&nbsp;                    break;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                    response.put(&quot;message&quot;, &quot;LiftSet not found with title: &quot; + name);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with id: &quot; + id);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Deletes a Set from LiftSet based on ComWork Name and Lift Name&quot;)
+&nbsp;    @DeleteMapping(&quot;/completedWorkout/name/{name}/{liftName}&quot;)
+&nbsp;    public Map&lt;String, String&gt; deleteSetFromComWorkLiftSetByName(@PathVariable String name, @PathVariable String liftName, @RequestParam int setNum)
+&nbsp;    {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        if (completedWorkout != null) {</b>
+<b class="nc">&nbsp;            for (LiftSet liftSet : completedWorkout.getCompletedSets()) {</b>
+<b class="nc">&nbsp;                if (liftSet.getLift().getTitle().equals(liftName)) {</b>
+<b class="nc">&nbsp;                    liftSet.getSets().remove(setNum - 1);</b>
+<b class="nc">&nbsp;                    completedWorkoutRepository.save(completedWorkout);</b>
+<b class="nc">&nbsp;                    response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                    response.put(&quot;message&quot;, &quot;Set deleted from LiftSet successfully&quot;);</b>
+&nbsp;                    break;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                    response.put(&quot;message&quot;, &quot;LiftSet not found with title: &quot; + name);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;CompletedWorkout not found with name: &quot; + name);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Gets the workouts that a user did on a certain date, date is in YYYY-MM-DD format&quot;)
+&nbsp;    @GetMapping(path=&quot;/calendar/{username}/{date}&quot;)
+&nbsp;    public Map&lt;String,Object&gt; getUsersWorkoutsforDate(@PathVariable String username, @PathVariable String date){
+<b class="nc">&nbsp;        LocalDate d = LocalDate.parse(date);</b>
+<b class="nc">&nbsp;        HashMap&lt;String,Object&gt; response = new HashMap&lt;&gt;();</b>
+&nbsp;        //Check if user exists
+<b class="nc">&nbsp;        if(userRepository.findByUsername(username)==null){</b>
+<b class="nc">&nbsp;            response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;message&quot;, &quot;User not found&quot;);</b>
+<b class="nc">&nbsp;            response.put(&quot;workouts&quot;, null);</b>
+&nbsp;        }else {
+<b class="nc">&nbsp;            List&lt;CompletedWorkout&gt; list = completedWorkoutRepository.findByUserUsernameAndDate(username, d);</b>
+<b class="nc">&nbsp;            if(list==null){</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;No workouts found&quot;);</b>
+&nbsp;            }else{
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;Workouts retrieved successfully&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+&nbsp;
+&nbsp;            }
+<b class="nc">&nbsp;            response.put(&quot;Workouts&quot;, list);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        response.put(&quot;dow&quot;, d.getDayOfWeek());</b>
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Posts a new CompletedWorkout object based a Workout template - Primary Post&quot;)
+&nbsp;    @PostMapping(&quot;/completedWorkout/{name}/workout/{workoutName}/{date}&quot;)
+&nbsp;    public Map&lt;String, String&gt; postCompletedWorkoutFromTemplateByNameWithDate(@PathVariable String workoutName, @PathVariable String name, @RequestParam String username, @PathVariable String date)
+&nbsp;    {
+<b class="nc">&nbsp;        LocalDate d = LocalDate.parse(date);</b>
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        Workout workout = workoutRepository.findByName(workoutName);</b>
+<b class="nc">&nbsp;        CompletedWorkout completedWorkout = completedWorkoutRepository.findByName(name);</b>
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (workout != null &amp;&amp; user != null) {</b>
+<b class="nc">&nbsp;            if (completedWorkout == null) {</b>
+<b class="nc">&nbsp;                completedWorkout = new CompletedWorkout(name, user, d);</b>
+<b class="nc">&nbsp;                Set&lt;Lift&gt; lifts = workout.getLifts();</b>
+&nbsp;
+<b class="nc">&nbsp;                for(Lift lift : lifts)</b>
+&nbsp;                {
+<b class="nc">&nbsp;                    Lift temp = liftRepository.findByTitle(lift.getTitle());</b>
+<b class="nc">&nbsp;                    LiftSet liftSet = new LiftSet(temp);</b>
+<b class="nc">&nbsp;                    liftSet.setCompletedWorkout(completedWorkout);</b>
+<b class="nc">&nbsp;                    completedWorkout.getCompletedSets().add(liftSet);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                user.getCompletedWorkouts().add(completedWorkout);</b>
+<b class="nc">&nbsp;                userRepository.save(user);</b>
+&nbsp;
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;200&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;New CompletedWorkout created successfully&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;CompletedWorkout already exists with name: &quot; + name);</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (workout == null) {</b>
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;Workout not found with name: &quot; + workoutName);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                response.put(&quot;status&quot;, &quot;404&quot;);</b>
+<b class="nc">&nbsp;                response.put(&quot;message&quot;, &quot;User not found with username: &quot; + username);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-24 16:14</div>
+</div>
+</body>
+</html>

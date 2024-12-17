@@ -1,0 +1,418 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivitySignup</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivitySignup (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivitySignup</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/101)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import java.util.regex.Pattern;
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.Response;
+&nbsp;import com.android.volley.VolleyError;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;
+&nbsp;import org.json.JSONException;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity class for user signup in the Fitness Tracker app.
+&nbsp; * Handles user registration and allows updates to email, username, and password.
+&nbsp; * Communicates with a backend server using Volley for network requests.
+&nbsp; */
+<b class="nc">&nbsp;public class ActivitySignup extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private static final String TAG = &quot;SignupActivity&quot;;
+&nbsp;    private static final String BASE_URL = &quot;http://coms-3090-014.class.las.iastate.edu:8080/user/&quot;;
+&nbsp;
+&nbsp;    private EditText etUsername, etPassword, etConfirmPassword, etEmail;
+&nbsp;    private Button btnSignup, btnChangeEmail, btnChangePassword, btnChangeUsername;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the activity is created. Initializes UI components and sets up button listeners.
+&nbsp;     *
+&nbsp;     * @param savedInstanceState Contains the saved state of the activity, if available.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_signup);</b>
+&nbsp;
+&nbsp;        // Initialize views
+<b class="nc">&nbsp;        etUsername = findViewById(R.id.etNewUsername);</b>
+<b class="nc">&nbsp;        etPassword = findViewById(R.id.etNewPassword);</b>
+<b class="nc">&nbsp;        etConfirmPassword = findViewById(R.id.etConfirmPassword);</b>
+<b class="nc">&nbsp;        etEmail = findViewById(R.id.etEmail);</b>
+<b class="nc">&nbsp;        btnSignup = findViewById(R.id.btnSignup);</b>
+<b class="nc">&nbsp;        btnChangeEmail = findViewById(R.id.btnChangeEmail);</b>
+<b class="nc">&nbsp;        btnChangePassword = findViewById(R.id.btnChangePassword);</b>
+<b class="nc">&nbsp;        btnChangeUsername = findViewById(R.id.btnChangeUserName);</b>
+&nbsp;
+&nbsp;        // Set up button click listeners
+<b class="nc">&nbsp;        btnSignup.setOnClickListener(v -&gt; handleSignup());</b>
+<b class="nc">&nbsp;        btnChangeEmail.setOnClickListener(v -&gt; changeEmail());</b>
+<b class="nc">&nbsp;        btnChangePassword.setOnClickListener(v -&gt; changePassword());</b>
+<b class="nc">&nbsp;        btnChangeUsername.setOnClickListener(v -&gt; changeUsername());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles user signup by validating input and sending a registration request to the server.
+&nbsp;     */
+&nbsp;    private void handleSignup() {
+<b class="nc">&nbsp;        String username = etUsername.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String password = etPassword.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String confirmPassword = etConfirmPassword.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String email = etEmail.getText().toString().trim();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (isInputValid(username, password, confirmPassword, email)) {</b>
+<b class="nc">&nbsp;            makeJsonRequest(BASE_URL + &quot;signup&quot;, username, password, email);</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(ActivitySignup.this, ActivityLogin.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the user input for signup.
+&nbsp;     *
+&nbsp;     * @param username        The entered username.
+&nbsp;     * @param password        The entered password.
+&nbsp;     * @param confirmPassword The confirmation of the entered password.
+&nbsp;     * @param email           The entered email address.
+&nbsp;     * @return True if input is valid, otherwise false.
+&nbsp;     */
+&nbsp;    private boolean isInputValid(String username, String password, String confirmPassword, String email) {
+<b class="nc">&nbsp;        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty()) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Please fill all fields&quot;);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (!password.equals(confirmPassword)) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Passwords do not match&quot;);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (!isValidEmail(email)) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Invalid email format&quot;);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (!isValidPassword(password)) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Password must be at least 8 characters long, contain at least one uppercase letter and one special character&quot;);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends a JSON request to the server for the signup process.
+&nbsp;     *
+&nbsp;     * @param url      The endpoint URL for the signup request.
+&nbsp;     * @param username The entered username.
+&nbsp;     * @param password The entered password.
+&nbsp;     * @param email    The entered email address.
+&nbsp;     */
+&nbsp;    private void makeJsonRequest(String url, String username, String password, String email) {
+<b class="nc">&nbsp;        JSONObject requestBody = createRequestBody(username, password, email);</b>
+<b class="nc">&nbsp;        sendRequest(Request.Method.POST, url, requestBody);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles email change requests by validating input and sending a request to the server.
+&nbsp;     */
+&nbsp;    private void changeEmail() {
+<b class="nc">&nbsp;        String username = etUsername.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String password = etPassword.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String newEmail = etEmail.getText().toString().trim();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (isChangeInputValid(username, password, newEmail)) {</b>
+<b class="nc">&nbsp;            JSONObject requestBody = createEmailChangeRequestBody(username, password, newEmail);</b>
+<b class="nc">&nbsp;            sendRequest(Request.Method.PUT, BASE_URL + &quot;signup/email&quot;, requestBody);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles password change requests by validating input and sending a request to the server.
+&nbsp;     */
+&nbsp;    private void changePassword() {
+<b class="nc">&nbsp;        String username = etUsername.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String email = etEmail.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String newPassword = etPassword.getText().toString().trim();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (isChangeInputValid(username, email, newPassword)) {</b>
+<b class="nc">&nbsp;            JSONObject requestBody = createPasswordChangeRequestBody(username, email, newPassword);</b>
+<b class="nc">&nbsp;            sendRequest(Request.Method.PUT, BASE_URL + &quot;signup/password&quot;, requestBody);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles username change requests by validating input and sending a request to the server.
+&nbsp;     */
+&nbsp;    private void changeUsername() {
+<b class="nc">&nbsp;        String email = etEmail.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String password = etPassword.getText().toString().trim();</b>
+<b class="nc">&nbsp;        String newUsername = etUsername.getText().toString().trim();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (isChangeInputValid(email, password, newUsername)) {</b>
+<b class="nc">&nbsp;            JSONObject requestBody = createUsernameChangeRequestBody(email, password, newUsername);</b>
+<b class="nc">&nbsp;            sendRequest(Request.Method.PUT, BASE_URL + &quot;signup/username&quot;, requestBody);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the input for change requests.
+&nbsp;     *
+&nbsp;     * @param firstField  The first field to validate.
+&nbsp;     * @param secondField The second field to validate.
+&nbsp;     * @param thirdField  The third field to validate.
+&nbsp;     * @return True if input is valid, otherwise false.
+&nbsp;     */
+&nbsp;    private boolean isChangeInputValid(String firstField, String secondField, String thirdField) {
+<b class="nc">&nbsp;        if (firstField.isEmpty() || secondField.isEmpty() || thirdField.isEmpty()) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Please fill all fields&quot;);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a JSON request body for signup requests.
+&nbsp;     *
+&nbsp;     * @param username The entered username.
+&nbsp;     * @param password The entered password.
+&nbsp;     * @param email    The entered email address.
+&nbsp;     * @return A JSONObject containing the request body.
+&nbsp;     */
+&nbsp;    private JSONObject createRequestBody(String username, String password, String email) {
+<b class="nc">&nbsp;        JSONObject requestBody = new JSONObject();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            requestBody.put(&quot;username&quot;, username);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;password&quot;, password);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;email&quot;, email);</b>
+<b class="nc">&nbsp;        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return requestBody;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JSONObject createEmailChangeRequestBody(String username, String password, String newEmail) {
+<b class="nc">&nbsp;        JSONObject requestBody = new JSONObject();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            requestBody.put(&quot;username&quot;, username);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;password&quot;, password);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;email&quot;, newEmail);</b>
+<b class="nc">&nbsp;        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return requestBody;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JSONObject createPasswordChangeRequestBody(String username, String email, String newPassword) {
+<b class="nc">&nbsp;        JSONObject requestBody = new JSONObject();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            requestBody.put(&quot;username&quot;, username);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;email&quot;, email);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;password&quot;, newPassword);</b>
+<b class="nc">&nbsp;        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return requestBody;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JSONObject createUsernameChangeRequestBody(String email, String password, String newUsername) {
+<b class="nc">&nbsp;        JSONObject requestBody = new JSONObject();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            requestBody.put(&quot;email&quot;, email);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;password&quot;, password);</b>
+<b class="nc">&nbsp;            requestBody.put(&quot;username&quot;, newUsername);</b>
+<b class="nc">&nbsp;        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return requestBody;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Similar JSON creation methods for other request types are defined below (omitted for brevity).
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends a JSON request to the specified URL.
+&nbsp;     *
+&nbsp;     * @param method       The HTTP method (e.g., POST, PUT).
+&nbsp;     * @param url          The endpoint URL.
+&nbsp;     * @param requestBody  The JSON request body.
+&nbsp;     */
+&nbsp;    private void sendRequest(int method, String url, JSONObject requestBody) {
+<b class="nc">&nbsp;        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(</b>
+&nbsp;                method,
+&nbsp;                url,
+&nbsp;                requestBody,
+&nbsp;                this::handleResponse,
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    Log.e(TAG, &quot;Error: &quot; + error.toString());</b>
+<b class="nc">&nbsp;                    showToast(&quot;Error occurred, please try again later&quot;);</b>
+&nbsp;                }
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the server response to a JSON request.
+&nbsp;     *
+&nbsp;     * @param response The JSONObject response from the server.
+&nbsp;     */
+&nbsp;    private void handleResponse(JSONObject response) {
+&nbsp;        try {
+<b class="nc">&nbsp;            String responseMessage = response.getString(&quot;message&quot;);</b>
+<b class="nc">&nbsp;            showToast(responseMessage);</b>
+<b class="nc">&nbsp;        } catch (JSONException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a toast message on the screen.
+&nbsp;     *
+&nbsp;     * @param message The message to display.
+&nbsp;     */
+&nbsp;    private void showToast(String message) {
+<b class="nc">&nbsp;        Toast.makeText(ActivitySignup.this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the format of an email address.
+&nbsp;     *
+&nbsp;     * @param email The email address to validate.
+&nbsp;     * @return True if the email format is valid, otherwise false.
+&nbsp;     */
+&nbsp;    private boolean isValidEmail(String email) {
+<b class="nc">&nbsp;        String emailPattern = &quot;[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+&quot;;</b>
+<b class="nc">&nbsp;        return email.matches(emailPattern);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the format of a password.
+&nbsp;     *
+&nbsp;     * @param password The password to validate.
+&nbsp;     * @return True if the password format is valid, otherwise false.
+&nbsp;     */
+&nbsp;    private boolean isValidPassword(String password) {
+<b class="nc">&nbsp;        String passwordPattern = &quot;^(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+\\-=\\[\\]{};&#39;:\&quot;\\\\|,.&lt;&gt;\\/?])(?=.{8,}).*$&quot;;</b>
+<b class="nc">&nbsp;        return Pattern.compile(passwordPattern).matcher(password).matches();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

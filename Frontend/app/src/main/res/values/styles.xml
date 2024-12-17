@@ -1,0 +1,6 @@
+<resources>
+    <style name="NoButtonTintTheme" parent="Theme.AppCompat.Light">
+        <item name="colorButtonNormal">@android:color/transparent</item>
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+</resources>

@@ -1,0 +1,343 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Profile</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">coms309.workout.Profile</a>
+</div>
+
+<h1>Coverage Summary for Class: Profile (coms309.workout.Profile)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Profile</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.3%
+  </span>
+  <span class="absValue">
+    (2/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4.4%
+  </span>
+  <span class="absValue">
+    (3/68)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Profile$HibernateInstantiator$If93zYyT</td>
+  </tr>
+  <tr>
+    <td class="name">Profile$HibernateProxy$HrconnIW</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    8.3%
+  </span>
+  <span class="absValue">
+    (2/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4.4%
+  </span>
+  <span class="absValue">
+    (3/68)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package coms309.workout.Profile;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import coms309.workout.Lifts.Lift;
+&nbsp;import coms309.workout.Users.User;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import coms309.workout.CompletedWorkout.CompletedWorkout;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Profile {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Long id;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private String filePath;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private String name;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private String bio;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private String favLiftName;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private double max_bench;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private double max_dead;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private double max_squat;
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private double max_clean;
+&nbsp;
+&nbsp;    @OneToOne
+&nbsp;    @JoinColumn(name = &quot;user_id&quot;, nullable = false)
+&nbsp;    @JsonIgnore
+&nbsp;    private User user;
+&nbsp;
+<b class="fc">&nbsp;    public Profile() {</b>
+<b class="fc">&nbsp;        this.filePath = &quot;/home/mattmn/profile_pictures/default_profile_pic.jpg&quot;;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public Profile(String n, String bio, String favLift, double max_bench, double max_dead, double max_squat, double max_clean) {</b>
+<b class="nc">&nbsp;        this.filePath = &quot;/home/mattmn/profile_pictures/default_profile_pic.jpg&quot;;</b>
+<b class="nc">&nbsp;        this.name = n;</b>
+<b class="nc">&nbsp;        this.bio = bio;</b>
+<b class="nc">&nbsp;        this.favLiftName = favLift;</b>
+<b class="nc">&nbsp;        this.max_bench = max_bench;</b>
+<b class="nc">&nbsp;        this.max_dead = max_dead;</b>
+<b class="nc">&nbsp;        this.max_squat = max_squat;</b>
+<b class="nc">&nbsp;        this.max_clean = max_clean;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getMax_bench() {
+<b class="nc">&nbsp;        return max_bench;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="nc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Long id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getName() {
+<b class="nc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setName(String name) {
+<b class="nc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getBio() {
+<b class="nc">&nbsp;        return bio;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setBio(String bio) {
+<b class="nc">&nbsp;        this.bio = bio;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getFavLiftName() {
+<b class="nc">&nbsp;        return favLiftName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setFavLiftName(String favLiftName) {
+<b class="nc">&nbsp;        this.favLiftName = favLiftName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getMax_dead() {
+<b class="nc">&nbsp;        return max_dead;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMax_dead(double max_dead) {
+<b class="nc">&nbsp;        this.max_dead = max_dead;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getMax_squat() {
+<b class="nc">&nbsp;        return max_squat;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMax_squat(double max_squat) {
+<b class="nc">&nbsp;        this.max_squat = max_squat;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getMax_clean() {
+<b class="nc">&nbsp;        return max_clean;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMax_clean(double max_clean) {
+<b class="nc">&nbsp;        this.max_clean = max_clean;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public User getUser() {
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUser(User user) {
+<b class="fc">&nbsp;        this.user = user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getFilePath() {
+<b class="nc">&nbsp;        return filePath;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setFilePath(String filePath) {
+<b class="nc">&nbsp;        this.filePath = filePath;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CompletedWorkout getLastWorkout(){
+<b class="nc">&nbsp;        User u = this.user;</b>
+<b class="nc">&nbsp;        List&lt;CompletedWorkout&gt; workouts = user.getCompletedWorkouts();</b>
+<b class="nc">&nbsp;        if (workouts.size()==0 ){</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }else {
+<b class="nc">&nbsp;            return workouts.get(workouts.size()-1);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;//to test
+&nbsp;    public int getStreak(){
+<b class="nc">&nbsp;        int streak = 1;</b>
+<b class="nc">&nbsp;        User u = this.user;</b>
+<b class="nc">&nbsp;        if (u.getCompletedWorkouts().size()&lt;2){</b>
+<b class="nc">&nbsp;            return u.getCompletedWorkouts().size();</b>
+&nbsp;        }else {
+<b class="nc">&nbsp;            List&lt;CompletedWorkout&gt; workouts = u.getCompletedWorkouts();</b>
+<b class="nc">&nbsp;            CompletedWorkout iworkout = workouts.get(workouts.size() - 1);</b>
+&nbsp;            //if most recent workout was today or yesturday
+<b class="nc">&nbsp;            if (!(iworkout.getDate().equals(LocalDate.now().minusDays(1)) || iworkout.getDate().equals(LocalDate.now()))) {</b>
+&nbsp;
+<b class="nc">&nbsp;                return 0;</b>
+&nbsp;            }else {
+<b class="nc">&nbsp;                for (CompletedWorkout w : workouts) {</b>
+<b class="nc">&nbsp;                    if (iworkout.getDate().minusDays(1).equals(w.getDate())) {</b>
+<b class="nc">&nbsp;                        streak++;</b>
+<b class="nc">&nbsp;                        iworkout = w;</b>
+<b class="nc">&nbsp;                    }else if(iworkout.getDate().equals(w.getDate())){</b>
+<b class="nc">&nbsp;                        iworkout = w;</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="nc">&nbsp;                return streak;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void copyProfile(Profile p){
+<b class="nc">&nbsp;        if(p.name!=null) {</b>
+<b class="nc">&nbsp;            this.name = p.name;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.bio!=null) {</b>
+<b class="nc">&nbsp;            this.bio = p.bio;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.favLiftName!=null) {</b>
+<b class="nc">&nbsp;            this.favLiftName = p.favLiftName;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.user!=null) {</b>
+<b class="nc">&nbsp;            this.user = p.user;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.bio!=null) {</b>
+<b class="nc">&nbsp;            this.bio = p.bio;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.max_bench&gt;0){</b>
+<b class="nc">&nbsp;            this.max_bench = p.max_bench;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.max_squat&gt;0){</b>
+<b class="nc">&nbsp;            this.max_squat = p.max_squat;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.max_clean&gt;0){</b>
+<b class="nc">&nbsp;            this.max_clean = p.max_clean;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(p.max_dead&gt;0){</b>
+<b class="nc">&nbsp;            this.max_dead = p.max_dead;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-24 16:14</div>
+</div>
+</body>
+</html>

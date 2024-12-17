@@ -1,0 +1,454 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ActivityHomeScreen</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: ActivityHomeScreen (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActivityHomeScreen</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/113)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ActivityHomeScreen$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/117)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.view.View;
+&nbsp;import android.widget.Adapter;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.ImageButton;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;import android.util.Log;
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;
+&nbsp;import com.android.volley.DefaultRetryPolicy;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.RequestQueue;
+&nbsp;import com.android.volley.RetryPolicy;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;import com.android.volley.toolbox.StringRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;import com.bumptech.glide.Glide;
+&nbsp;
+&nbsp;import org.json.JSONException;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+&nbsp;import java.text.ParseException;
+&nbsp;import java.text.SimpleDateFormat;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.Locale;
+&nbsp;
+<b class="nc">&nbsp;public class ActivityHomeScreen extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    // Buttons for original activities
+&nbsp;    private Button btnNewWorkout, btnCreateWorkout;
+&nbsp;    private ImageButton btnProfile, btnFriends, btnLiftSearch, btnCalendar, btnSettings;
+&nbsp;
+&nbsp;    // Dashboard components
+&nbsp;    private TextView tvStreaks, tvFavoriteLiftProgress, tvMuscleGroupProgress, tvRecentWorkout;
+&nbsp;
+&nbsp;    private RequestQueue requestQueue;
+<b class="nc">&nbsp;    private final String BASE_URL = &quot;http://coms-3090-014.class.las.iastate.edu:8080&quot;;</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_main);</b>
+&nbsp;
+&nbsp;        // Initialize UI Components
+<b class="nc">&nbsp;        btnNewWorkout = findViewById(R.id.btnNewWorkout);</b>
+<b class="nc">&nbsp;        btnProfile = findViewById(R.id.btnProfile);</b>
+<b class="nc">&nbsp;        btnFriends = findViewById(R.id.btnFriends);</b>
+<b class="nc">&nbsp;        btnLiftSearch = findViewById(R.id.btnLiftSearch);</b>
+<b class="nc">&nbsp;        btnCalendar = findViewById(R.id.btnCalendar);</b>
+<b class="nc">&nbsp;        btnSettings = findViewById(R.id.btnSettings);</b>
+&nbsp;
+&nbsp;        // Dashboard TextViews
+<b class="nc">&nbsp;        tvStreaks = findViewById(R.id.tvStreaks);</b>
+<b class="nc">&nbsp;        tvFavoriteLiftProgress = findViewById(R.id.tvFavoriteLiftProgress);</b>
+<b class="nc">&nbsp;        tvMuscleGroupProgress = findViewById(R.id.tvMuscleGroupProgress);</b>
+<b class="nc">&nbsp;        tvRecentWorkout = findViewById(R.id.tvRecentWorkout);</b>
+&nbsp;
+<b class="nc">&nbsp;        requestQueue = Volley.newRequestQueue(this);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnNewWorkout.setOnClickListener(v -&gt; startActivity(new Intent(this, ActivityStartWorkout.class)));</b>
+<b class="nc">&nbsp;        btnProfile.setOnClickListener(v -&gt; startActivity(new Intent(this, ProfileActivity.class)));</b>
+<b class="nc">&nbsp;        btnFriends.setOnClickListener(v -&gt; startActivity(new Intent(this, SocialHubActivity.class)));</b>
+<b class="nc">&nbsp;        btnLiftSearch.setOnClickListener(v -&gt; startActivity(new Intent(this, ActivityMyWorkouts.class)));</b>
+<b class="nc">&nbsp;        btnCalendar.setOnClickListener(v -&gt; startActivity(new Intent(this, CalendarActivity.class)));</b>
+<b class="nc">&nbsp;        btnSettings.setOnClickListener(new View.OnClickListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void onClick(View v) {
+<b class="nc">&nbsp;                if (ActivityLogin.getUserLevel().equals(&quot;ADMIN&quot;)) {</b>
+<b class="nc">&nbsp;                    startActivity(new Intent(ActivityHomeScreen.this, AdminSettingsActivity.class));</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    startActivity(new Intent(ActivityHomeScreen.this, SettingsActivity.class));</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        String username = ActivityLogin.getUsername();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (username != null) {</b>
+<b class="nc">&nbsp;            fetchProfilePicture(username);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;Error: Unable to fetch user data. Please log in again.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (username != null) {</b>
+<b class="nc">&nbsp;            fetchStreak(username);</b>
+<b class="nc">&nbsp;            String tf2s = &quot;2024-12-04&quot;;</b>
+<b class="nc">&nbsp;            String tf2e = &quot;2024-12-12&quot;;</b>
+<b class="nc">&nbsp;            String tf1s = &quot;2024-11-15&quot;;</b>
+<b class="nc">&nbsp;            String tf1e = &quot;2024-12-05&quot;;</b>
+<b class="nc">&nbsp;            fetchProgress(username, tf1s, tf1e, tf2s, tf2e);</b>
+&nbsp;
+&nbsp;            // Validate date ranges before fetching muscle group progress
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;            if (isDateRangeValid(tf1s, tf1e) &amp;&amp; isDateRangeValid(tf2s, tf2e)) {</b>
+<b class="nc">&nbsp;                fetchMuscleGroupProgress(username, tf1s, tf1e, tf2s, tf2e);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                Log.e(&quot;ActivityHomeScreen&quot;, &quot;Invalid date range&quot;);</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Please provide a valid date range.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            fetchLastWorkout(username);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;Error: Unable to fetch user data. Please log in again.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private void fetchStreak(String username) {
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/streak/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        StringRequest request = new StringRequest(Request.Method.GET, url,</b>
+<b class="nc">&nbsp;                response -&gt; tvStreaks.setText(&quot;Workout Streak: &quot; + response.trim() + &quot; days&quot;),</b>
+<b class="nc">&nbsp;                error -&gt; Toast.makeText(this, &quot;Error fetching streak&quot;, Toast.LENGTH_SHORT).show());</b>
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchProfilePicture(String username) {
+<b class="nc">&nbsp;        String pictureUrl = BASE_URL + &quot;/user/picture/&quot; + username;</b>
+&nbsp;
+&nbsp;        // Use Glide or Picasso for image loading
+<b class="nc">&nbsp;        Glide.with(this)</b>
+<b class="nc">&nbsp;                .load(pictureUrl)</b>
+<b class="nc">&nbsp;                .placeholder(R.drawable.ic_profile) // Placeholder while loading</b>
+<b class="nc">&nbsp;                .error(R.drawable.ic_profile)       // Fallback if there&#39;s an error</b>
+<b class="nc">&nbsp;                .circleCrop()                       // Ensure the image is circular</b>
+<b class="nc">&nbsp;                .into(btnProfile);                  // Set the image into the ImageButton</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchProgress(String username, String tf1s, String tf1e, String tf2s, String tf2e) {
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/progress/random/lift/&quot; + username +</b>
+&nbsp;                &quot;?tf1s=&quot; + tf1s + &quot;&amp;tf1e=&quot; + tf1e + &quot;&amp;tf2s=&quot; + tf2s + &quot;&amp;tf2e=&quot; + tf2e;
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String progressString = response.optString(&quot;comparison&quot;, &quot;0&quot;);</b>
+&nbsp;                    try {
+<b class="nc">&nbsp;                        double progress = Double.parseDouble(progressString);</b>
+<b class="nc">&nbsp;                        String formattedProgress = String.format(&quot;%.2f&quot;, progress);</b>
+<b class="nc">&nbsp;                        tvFavoriteLiftProgress.setText(&quot;You have improved &quot; + response.get(&quot;liftName&quot;) + &quot; by &quot; + formattedProgress + &quot;%&quot;);</b>
+<b class="nc">&nbsp;                    } catch (NumberFormatException e) {</b>
+&nbsp;                        try {
+<b class="nc">&nbsp;                            tvFavoriteLiftProgress.setText(&quot;You have improved &quot; + response.get(&quot;liftName&quot;) + &quot; by N/A%&quot;);</b>
+<b class="nc">&nbsp;                        } catch (JSONException ex) {</b>
+<b class="nc">&nbsp;                            throw new RuntimeException(ex);</b>
+&nbsp;                        }
+<b class="nc">&nbsp;                    } catch (JSONException e) {</b>
+<b class="nc">&nbsp;                        throw new RuntimeException(e);</b>
+&nbsp;                    }
+&nbsp;                },
+<b class="nc">&nbsp;                error -&gt; Toast.makeText(this, &quot;Failed to fetch progress.&quot;, Toast.LENGTH_SHORT).show());</b>
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchMuscleGroupProgress(String username, String tf1s, String tf1e, String tf2s, String tf2e) {
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/progress/random/muscleGroup/&quot; + username +</b>
+&nbsp;                &quot;?tf1s=&quot; + tf1s + &quot;&amp;tf1e=&quot; + tf1e + &quot;&amp;tf2s=&quot; + tf2s + &quot;&amp;tf2e=&quot; + tf2e;
+&nbsp;
+<b class="nc">&nbsp;        Log.d(&quot;ActivityHomeScreen&quot;, &quot;Fetching muscle group progress from URL: &quot; + url);</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String formattedProgress = null;</b>
+&nbsp;                    try {
+<b class="nc">&nbsp;                        formattedProgress = String.format(&quot;%.2f&quot;, response.get(&quot;comparison&quot;));</b>
+<b class="nc">&nbsp;                    } catch (JSONException e) {</b>
+<b class="nc">&nbsp;                        throw new RuntimeException(e);</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                    try {
+<b class="nc">&nbsp;                        tvMuscleGroupProgress.setText(&quot;You have improved &quot; + response.get(&quot;muscleGroup&quot;) + &quot; by &quot; + formattedProgress + &quot;%&quot;);</b>
+<b class="nc">&nbsp;                    } catch (JSONException e) {</b>
+<b class="nc">&nbsp;                        Log.e(&quot;fetchMuscleGroupProgress&quot;, &quot;Error parsing response&quot;, e);</b>
+<b class="nc">&nbsp;                        tvMuscleGroupProgress.setText(&quot;Unable to retrieve muscle group progress.&quot;);</b>
+&nbsp;                    }
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    if (error.networkResponse != null) {</b>
+<b class="nc">&nbsp;                        String errorData = new String(error.networkResponse.data);</b>
+<b class="nc">&nbsp;                        Log.e(&quot;ActivityHomeScreen&quot;, &quot;Error response from server: &quot; + errorData);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    String errorMessage = error.networkResponse != null</b>
+<b class="nc">&nbsp;                            ? &quot;Server Error: &quot; + error.networkResponse.statusCode</b>
+<b class="nc">&nbsp;                            : &quot;Network Error&quot;;</b>
+<b class="nc">&nbsp;                    Log.e(&quot;ActivityHomeScreen&quot;, &quot;Error fetching max: &quot; + errorMessage, error);</b>
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Failed to fetch max.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+&nbsp;        // Set a custom RetryPolicy for longer timeout
+<b class="nc">&nbsp;        int socketTimeout = 30000; // 30 seconds</b>
+<b class="nc">&nbsp;        RetryPolicy policy = new DefaultRetryPolicy(</b>
+&nbsp;                socketTimeout,
+&nbsp;                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Retry count
+&nbsp;                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Backoff multiplier
+&nbsp;        );
+<b class="nc">&nbsp;        request.setRetryPolicy(policy);</b>
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    private void fetchMuscleGroupProgress(String username) {
+&nbsp;//        String url = BASE_URL + &quot;/user/max/random/&quot; + username;
+&nbsp;//
+&nbsp;//        Log.d(&quot;ActivityHomeScreen&quot;, &quot;Fetching muscle group progress from URL: &quot; + url);
+&nbsp;//
+&nbsp;//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+&nbsp;//                response -&gt; {
+&nbsp;//                    String progressString = response.optString(&quot;comparison&quot;, &quot;N/A&quot;);
+&nbsp;//                    try {
+&nbsp;//                        tvMuscleGroupProgress.setText(&quot;for &quot; + response.get(&quot;liftName&quot;) + &quot; is &quot; + response.get(&quot;maxWeight&quot;));
+&nbsp;//                    } catch (NumberFormatException e) {
+&nbsp;//                        try {
+&nbsp;//                            tvMuscleGroupProgress.setText(&quot;Your current max for &quot; + response.get(&quot;liftName&quot;) + &quot; is &quot; + response.get(&quot;maxWeight&quot;));
+&nbsp;//                        } catch (JSONException ex) {
+&nbsp;//                            throw new RuntimeException(ex);
+&nbsp;//                        }
+&nbsp;//                    } catch (JSONException e) {
+&nbsp;//                        throw new RuntimeException(e);
+&nbsp;//                    }
+&nbsp;//                },
+&nbsp;//                error -&gt; {
+&nbsp;//                    if (error.networkResponse != null) {
+&nbsp;//                        String errorData = new String(error.networkResponse.data);
+&nbsp;//                        Log.e(&quot;ActivityHomeScreen&quot;, &quot;Error response from server: &quot; + errorData);
+&nbsp;//                    }
+&nbsp;//                    String errorMessage = error.networkResponse != null
+&nbsp;//                            ? &quot;Server Error: &quot; + error.networkResponse.statusCode
+&nbsp;//                            : &quot;Network Error&quot;;
+&nbsp;//                    Log.e(&quot;ActivityHomeScreen&quot;, &quot;Error fetching max : &quot; + errorMessage, error);
+&nbsp;//                    Toast.makeText(this, &quot;Failed to fetch max.&quot;, Toast.LENGTH_SHORT).show();
+&nbsp;//                });
+&nbsp;//
+&nbsp;//        requestQueue.add(request);
+&nbsp;//    }
+&nbsp;
+&nbsp;
+&nbsp;    private boolean isDateRangeValid(String start, String end) {
+&nbsp;        try {
+<b class="nc">&nbsp;            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;, Locale.US);</b>
+<b class="nc">&nbsp;            Date startDate = sdf.parse(start);</b>
+<b class="nc">&nbsp;            Date endDate = sdf.parse(end);</b>
+<b class="nc">&nbsp;            return startDate != null &amp;&amp; endDate != null &amp;&amp; startDate.before(endDate);</b>
+<b class="nc">&nbsp;        } catch (ParseException e) {</b>
+<b class="nc">&nbsp;            Log.e(&quot;DateValidation&quot;, &quot;Invalid date format&quot;, e);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    private void fetchLastWorkout(String username) {
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/lastWorkout/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String completedWorkoutName = response.optString(&quot;name&quot;, &quot;N/A&quot;);</b>
+<b class="nc">&nbsp;                    String originalWorkoutName = extractOriginalWorkoutName(completedWorkoutName);</b>
+<b class="nc">&nbsp;                    String workoutDate = response.optString(&quot;date&quot;, &quot;N/A&quot;);</b>
+<b class="nc">&nbsp;                    tvRecentWorkout.setText(&quot;Last Workout: &quot; + originalWorkoutName + &quot; on &quot; + workoutDate);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    if (error.networkResponse != null) {</b>
+<b class="nc">&nbsp;                        String errorData = new String(error.networkResponse.data);</b>
+<b class="nc">&nbsp;                        Log.e(&quot;ActivityHomeScreen&quot;, &quot;Error response from server: &quot; + errorData);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    String errorMessage = error.networkResponse != null</b>
+<b class="nc">&nbsp;                            ? &quot;Server Error: &quot; + error.networkResponse.statusCode</b>
+<b class="nc">&nbsp;                            : &quot;Network Error&quot;;</b>
+<b class="nc">&nbsp;                    Log.e(&quot;ActivityHomeScreen&quot;, &quot;Error fetching last workout: &quot; + errorMessage, error);</b>
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Error fetching last workout&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Extracts the original workout name by removing the &quot;_completed_&lt;timestamp&gt;&quot; suffix.
+&nbsp;     *
+&nbsp;     * @param completedWorkoutName The name of the completed workout (e.g., &quot;ass_completed_20241209200620&quot;).
+&nbsp;     * @return The original workout name (e.g., &quot;ass&quot;).
+&nbsp;     */
+&nbsp;    private String extractOriginalWorkoutName(String completedWorkoutName) {
+&nbsp;        // Assuming the format is &quot;workoutName_completed_timestamp&quot;
+<b class="nc">&nbsp;        String[] parts = completedWorkoutName.split(&quot;_completed_&quot;);</b>
+<b class="nc">&nbsp;        if (parts.length &gt; 1) {</b>
+<b class="nc">&nbsp;            return parts[0];</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return completedWorkoutName; // Return as is if the pattern doesn&#39;t match</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>

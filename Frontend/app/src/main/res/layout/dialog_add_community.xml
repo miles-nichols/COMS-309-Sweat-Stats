@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <EditText
+        android:id="@+id/etCommunityName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Community Name"
+        android:inputType="textPersonName"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etCommunityDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Recommend Workouts"
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        android:layout_marginBottom="8dp"
+        android:minLines="3" />
+
+</LinearLayout>

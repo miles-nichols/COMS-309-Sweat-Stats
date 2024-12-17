@@ -1,0 +1,320 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DashboardActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.fitnesstracker</a>
+</div>
+
+<h1>Coverage Summary for Class: DashboardActivity (com.example.fitnesstracker)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DashboardActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/100)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.fitnesstracker;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.ImageButton;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;import android.widget.Button;
+&nbsp;import android.util.Log; // For Log statements
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;
+&nbsp;import com.android.volley.Request;
+&nbsp;import com.android.volley.RequestQueue;
+&nbsp;import com.android.volley.toolbox.JsonObjectRequest;
+&nbsp;import com.android.volley.toolbox.StringRequest;
+&nbsp;import com.android.volley.toolbox.Volley;
+&nbsp;
+&nbsp;import org.json.JSONArray;
+&nbsp;import org.json.JSONObject;
+&nbsp;
+<b class="nc">&nbsp;public class DashboardActivity extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    private TextView tvStreaks, tvFavoriteLiftProgress, tvMuscleGroupProgress, tvRecentWorkout;
+&nbsp;    private ImageButton btnFriends, btnLiftSearch, btnCalendar, btnSettings;
+&nbsp;    private RequestQueue requestQueue;
+<b class="nc">&nbsp;    private final String BASE_URL = &quot;http://coms-3090-014.class.las.iastate.edu:8080&quot;;</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_dashboard);</b>
+&nbsp;
+&nbsp;        // Initialize UI Components
+<b class="nc">&nbsp;        tvStreaks = findViewById(R.id.tvStreaks);</b>
+<b class="nc">&nbsp;        tvFavoriteLiftProgress = findViewById(R.id.tvFavoriteLiftProgress);</b>
+<b class="nc">&nbsp;        tvMuscleGroupProgress = findViewById(R.id.tvMuscleGroupProgress);</b>
+<b class="nc">&nbsp;        tvRecentWorkout = findViewById(R.id.tvRecentWorkout);</b>
+<b class="nc">&nbsp;        btnFriends = findViewById(R.id.btnFriends);</b>
+<b class="nc">&nbsp;        btnLiftSearch = findViewById(R.id.btnLiftSearch);</b>
+<b class="nc">&nbsp;        btnCalendar = findViewById(R.id.btnCalendar);</b>
+<b class="nc">&nbsp;        btnSettings = findViewById(R.id.btnSettings);</b>
+<b class="nc">&nbsp;        requestQueue = Volley.newRequestQueue(this);</b>
+&nbsp;
+&nbsp;        // Get the currently logged-in username
+<b class="nc">&nbsp;        String username = ActivityLogin.getUsername();</b>
+<b class="nc">&nbsp;        if (username != null) {</b>
+<b class="nc">&nbsp;            fetchStreak(username);</b>
+<b class="nc">&nbsp;            fetchProgress(username, &quot;Bench Press&quot;, &quot;2024-11-01&quot;, &quot;2024-11-15&quot;, &quot;2024-12-01&quot;, &quot;2024-12-15&quot;);</b>
+<b class="nc">&nbsp;            fetchMuscleGroupProgress(username, &quot;Chest&quot;, &quot;2024-11-01&quot;, &quot;2024-11-15&quot;, &quot;2024-12-01&quot;, &quot;2024-12-15&quot;);</b>
+<b class="nc">&nbsp;            fetchLastWorkout(username);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;Error: Unable to fetch user data. Please log in again.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        btnFriends.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(DashboardActivity.this, ActivityFriends.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnLiftSearch.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(DashboardActivity.this, ActivityLiftSearch.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnCalendar.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(DashboardActivity.this, CalendarActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnSettings.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;        });</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchStreak(String username) {
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/streak/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        StringRequest request = new StringRequest(Request.Method.GET, url,</b>
+<b class="nc">&nbsp;                response -&gt; tvStreaks.setText(&quot;Workout Streak: &quot; + response.trim() + &quot; days&quot;),</b>
+<b class="nc">&nbsp;                error -&gt; Toast.makeText(this, &quot;Error fetching streak&quot;, Toast.LENGTH_SHORT).show());</b>
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchProgress(String username, String liftName, String tf1s, String tf1e, String tf2s, String tf2e) {
+<b class="nc">&nbsp;        if (username == null || username.isEmpty()) {</b>
+<b class="nc">&nbsp;            Log.e(&quot;DashboardActivity&quot;, &quot;Invalid username for lift progress.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/progress/&quot; + username + &quot;/lift/&quot; + liftName +</b>
+&nbsp;                &quot;?tf1s=&quot; + tf1s + &quot;&amp;tf1e=&quot; + tf1e + &quot;&amp;tf2s=&quot; + tf2s + &quot;&amp;tf2e=&quot; + tf2e;
+&nbsp;
+<b class="nc">&nbsp;        Log.d(&quot;DashboardActivity&quot;, &quot;Fetching lift progress from URL: &quot; + url);</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String progressString = response.optString(&quot;comparison&quot;, &quot;0&quot;);</b>
+&nbsp;                    try {
+&nbsp;                        // Parse progress as a double and round to the nearest hundredth
+<b class="nc">&nbsp;                        double progress = Double.parseDouble(progressString);</b>
+<b class="nc">&nbsp;                        String formattedProgress = String.format(&quot;%.2f&quot;, progress);</b>
+&nbsp;
+&nbsp;                        // Update the TextView with the personalized message
+<b class="nc">&nbsp;                        tvFavoriteLiftProgress.setText(&quot;You have improved &quot; + liftName + &quot; by &quot; + formattedProgress + &quot;%&quot;);</b>
+<b class="nc">&nbsp;                        Log.d(&quot;DashboardActivity&quot;, &quot;Lift progress fetched successfully: &quot; + formattedProgress);</b>
+<b class="nc">&nbsp;                    } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                        Log.e(&quot;DashboardActivity&quot;, &quot;Error parsing progress value: &quot; + progressString, e);</b>
+<b class="nc">&nbsp;                        tvFavoriteLiftProgress.setText(&quot;You have improved &quot; + liftName + &quot; by N/A%&quot;);</b>
+&nbsp;                    }
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    if (error.networkResponse != null) {</b>
+<b class="nc">&nbsp;                        String errorData = new String(error.networkResponse.data);</b>
+<b class="nc">&nbsp;                        Log.e(&quot;DashboardActivity&quot;, &quot;Error response from server: &quot; + errorData);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    String errorMessage = error.networkResponse != null</b>
+<b class="nc">&nbsp;                            ? &quot;Server Error: &quot; + error.networkResponse.statusCode</b>
+<b class="nc">&nbsp;                            : &quot;Network Error&quot;;</b>
+<b class="nc">&nbsp;                    Log.e(&quot;DashboardActivity&quot;, &quot;Error fetching lift progress: &quot; + errorMessage, error);</b>
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Failed to fetch lift progress.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    private void fetchLastWorkout(String username) {
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/lastWorkout/&quot; + username;</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String workoutName = response.optString(&quot;name&quot;, &quot;N/A&quot;);</b>
+<b class="nc">&nbsp;                    String workoutDate = response.optString(&quot;date&quot;, &quot;N/A&quot;);</b>
+<b class="nc">&nbsp;                    JSONArray completedSets = response.optJSONArray(&quot;completedSets&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;                    StringBuilder workoutDetails = new StringBuilder(&quot;Last Workout: &quot; + workoutName + &quot; on &quot; + workoutDate + &quot;\nDetails:\n&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (completedSets != null) {</b>
+<b class="nc">&nbsp;                        for (int i = 0; i &lt; completedSets.length(); i++) {</b>
+<b class="nc">&nbsp;                            JSONObject set = completedSets.optJSONObject(i);</b>
+<b class="nc">&nbsp;                            if (set != null) {</b>
+<b class="nc">&nbsp;                                JSONObject lift = set.optJSONObject(&quot;lift&quot;);</b>
+<b class="nc">&nbsp;                                if (lift != null) {</b>
+<b class="nc">&nbsp;                                    String liftTitle = lift.optString(&quot;title&quot;, &quot;Unknown Lift&quot;);</b>
+<b class="nc">&nbsp;                                    workoutDetails.append(liftTitle).append(&quot;:\n&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;                                    JSONArray sets = set.optJSONArray(&quot;sets&quot;);</b>
+<b class="nc">&nbsp;                                    if (sets != null) {</b>
+<b class="nc">&nbsp;                                        for (int j = 0; j &lt; sets.length(); j++) {</b>
+<b class="nc">&nbsp;                                            JSONObject setDetail = sets.optJSONObject(j);</b>
+<b class="nc">&nbsp;                                            if (setDetail != null) {</b>
+<b class="nc">&nbsp;                                                int reps = setDetail.optInt(&quot;reps&quot;, 0);</b>
+<b class="nc">&nbsp;                                                int weight = setDetail.optInt(&quot;weight&quot;, 0);</b>
+<b class="nc">&nbsp;                                                workoutDetails.append(&quot;  &quot;).append(reps).append(&quot; reps @ &quot;).append(weight).append(&quot; lbs\n&quot;);</b>
+&nbsp;                                            }
+&nbsp;                                        }
+&nbsp;                                    }
+&nbsp;                                }
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;
+<b class="nc">&nbsp;                    tvRecentWorkout.setText(workoutDetails.toString());</b>
+&nbsp;                },
+<b class="nc">&nbsp;                error -&gt; Toast.makeText(this, &quot;Error fetching last workout&quot;, Toast.LENGTH_SHORT).show());</b>
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void fetchMuscleGroupProgress(String username, String muscleGroup, String tf1s, String tf1e, String tf2s, String tf2e) {
+<b class="nc">&nbsp;        if (username == null || username.isEmpty()) {</b>
+<b class="nc">&nbsp;            Log.e(&quot;DashboardActivity&quot;, &quot;Invalid username for muscle group progress.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        String url = BASE_URL + &quot;/user/progress/&quot; + username + &quot;/muscleGroup/&quot; + muscleGroup +</b>
+&nbsp;                &quot;?tf1s=&quot; + tf1s + &quot;&amp;tf1e=&quot; + tf1e + &quot;&amp;tf2s=&quot; + tf2s + &quot;&amp;tf2e=&quot; + tf2e;
+&nbsp;
+<b class="nc">&nbsp;        Log.d(&quot;DashboardActivity&quot;, &quot;Fetching muscle group progress from URL: &quot; + url);</b>
+&nbsp;
+<b class="nc">&nbsp;        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,</b>
+&nbsp;                response -&gt; {
+<b class="nc">&nbsp;                    String progress = response.optString(&quot;comparison&quot;, &quot;N/A&quot;);</b>
+<b class="nc">&nbsp;                    tvMuscleGroupProgress.setText(&quot;Muscle Group Progress: &quot; + progress + &quot;%&quot;);</b>
+<b class="nc">&nbsp;                    Log.d(&quot;DashboardActivity&quot;, &quot;Muscle group progress fetched successfully: &quot; + progress);</b>
+&nbsp;                },
+&nbsp;                error -&gt; {
+<b class="nc">&nbsp;                    if (error.networkResponse != null) {</b>
+<b class="nc">&nbsp;                        String errorData = new String(error.networkResponse.data);</b>
+<b class="nc">&nbsp;                        Log.e(&quot;DashboardActivity&quot;, &quot;Error response from server: &quot; + errorData);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    String errorMessage = error.networkResponse != null</b>
+<b class="nc">&nbsp;                            ? &quot;Server Error: &quot; + error.networkResponse.statusCode</b>
+<b class="nc">&nbsp;                            : &quot;Network Error&quot;;</b>
+<b class="nc">&nbsp;                    Log.e(&quot;DashboardActivity&quot;, &quot;Error fetching muscle group progress: &quot; + errorMessage, error);</b>
+<b class="nc">&nbsp;                    Toast.makeText(this, &quot;Failed to fetch muscle group progress.&quot;, Toast.LENGTH_SHORT).show();</b>
+&nbsp;                });
+&nbsp;
+<b class="nc">&nbsp;        requestQueue.add(request);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-11 14:58</div>
+</div>
+</body>
+</html>
